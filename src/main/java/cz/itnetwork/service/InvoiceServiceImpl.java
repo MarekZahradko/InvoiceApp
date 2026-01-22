@@ -69,6 +69,11 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceMapper.toDTO(saved);
 
     }
+    @Override
+    public InvoiceDTO getInvoiceDetail(Long invoiceId) {
+        InvoiceEntity invoice = invoiceRepository.getReferenceById(invoiceId);
+        return invoiceMapper.toDTO(invoice);
+    }
 
 
 }
