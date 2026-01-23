@@ -15,7 +15,7 @@ This application provides a complete backend solution for invoice management, al
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| Java | 18 | Programming language |
+| Java | 17 | Programming language |
 | Spring Boot | 3.0.2 | Application framework |
 | Spring Data JPA | 3.0.x | Database access layer |
 | MySQL | 8.0 | Relational database |
@@ -26,7 +26,7 @@ This application provides a complete backend solution for invoice management, al
 
 ## Prerequisites
 
-- **Java 18** or higher
+- **Java 17** or higher
 - **Maven** 3.6+
 - **MySQL Server** 8.0+
 
