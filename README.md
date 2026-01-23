@@ -261,6 +261,39 @@ mvn clean package
 mvn test
 ```
 
+## Implementation Progress
+
+### Persons API
+| Endpoint | Status |
+|----------|--------|
+| `POST /api/persons` | Done |
+| `GET /api/persons` | Done |
+| `GET /api/persons/{id}` | Done |
+| `PUT /api/persons/{id}` | Done |
+| `DELETE /api/persons/{id}` | Done |
+
+### Invoices API
+| Endpoint | Status |
+|----------|--------|
+| `POST /api/invoices` | Done |
+| `GET /api/invoices` | Done |
+| `GET /api/invoices/{id}` | Not started |
+| `PUT /api/invoices/{id}` | Done |
+| `DELETE /api/invoices/{id}` | Not started |
+| Invoice filtering | Not started |
+
+### Sales & Purchases API
+| Endpoint | Status |
+|----------|--------|
+| `GET /api/identification/{id}/sales` | Not started |
+| `GET /api/identification/{id}/purchases` | Not started |
+
+### Statistics API
+| Endpoint | Status |
+|----------|--------|
+| `GET /api/invoices/statistics` | Not started |
+| `GET /api/persons/statistics` | Not started |
+
 ## License
 
 This project is for educational purposes.
