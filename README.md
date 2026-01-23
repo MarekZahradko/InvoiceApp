@@ -50,12 +50,12 @@ Edit `src/main/resources/application.yaml` to change.
 | `DELETE /api/persons/{id}` | Done |
 
 ### Invoices API
-| Endpoint | Status |
-|----------|--------|
-| `POST /api/invoices` | Done |
-| `GET /api/invoices` | Done |
-| `GET /api/invoices/{id}` | Not started |
-| `PUT /api/invoices/{id}` | Done |
+| Endpoint | Status      |
+|----------|-------------|
+| `POST /api/invoices` | Done        |
+| `GET /api/invoices` | Done        |
+| `GET /api/invoices/{id}` | In progress |
+| `PUT /api/invoices/{id}` | Done        |
 | `DELETE /api/invoices/{id}` | Not started |
 | Invoice filtering | Not started |
 
