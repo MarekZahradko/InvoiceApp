@@ -83,6 +83,25 @@ public class InvoiceServiceImpl implements InvoiceService {
         invoiceRepository.deleteById(invoiceId);
     }
 
+    @Override
+    public List<InvoiceDTO> getInvoicesBySeller(String identificationNumber) {
+        List<InvoiceDTO> result = new ArrayList<>();
+        for (InvoiceEntity invoice : invoiceRepository.findBySellerIdentificationNumber(identificationNumber)) {
+            result.add(invoiceMapper.toDTO(invoice));
+        }
+        return result;
+    }
+    @Override
+    public List<InvoiceDTO> getInvoicesByBuyer(String identificationNumber) {
+        List<InvoiceDTO> result = new ArrayList<>();
+        for (InvoiceEntity invoice : invoiceRepository.findByBuyerIdentificationNumber(identificationNumber)) {
+            result.add(invoiceMapper.toDTO(invoice));
+        }
+        return result;
+    }
+
+
+
 
 
 

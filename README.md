@@ -62,8 +62,8 @@ Edit `src/main/resources/application.yaml` to change.
 ### Sales & Purchases API
 | Endpoint | Status |
 |----------|--------|
-| `GET /api/identification/{id}/sales` | Not started |
-| `GET /api/identification/{id}/purchases` | Not started |
+| `GET /api/identification/{id}/sales` | Done |
+| `GET /api/identification/{id}/purchases` | Done |
 
 ### Statistics API
 | Endpoint | Status |

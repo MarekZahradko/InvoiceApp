@@ -42,6 +42,17 @@ public class InvoiceController {
         invoiceService.deleteInvoice(invoiceId);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/identification/{identificationNumber}/sales")
+    public List<InvoiceDTO> getInvoicesBySeller(@PathVariable String identificationNumber) {
+        return invoiceService.getInvoicesBySeller(identificationNumber);
+
+    }
+
+    @GetMapping("/identification/{identificationNumber}/purchases")
+    public List<InvoiceDTO> getInvoicesByBuyer(@PathVariable String identificationNumber) {
+        return invoiceService.getInvoicesByBuyer(identificationNumber);
+
+    }
 
 
 

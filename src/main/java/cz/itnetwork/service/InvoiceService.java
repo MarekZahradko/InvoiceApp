@@ -14,4 +14,8 @@ public interface InvoiceService {
     InvoiceDTO getInvoiceDetail(Long invoiceId);
 
     void deleteInvoice(Long invoiceId);
+
+    List<InvoiceDTO> getInvoicesBySeller(String identificationNumber);
+
+    List<InvoiceDTO> getInvoicesByBuyer(String identificationNumber);
 }
