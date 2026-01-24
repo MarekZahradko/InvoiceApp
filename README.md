@@ -54,9 +54,9 @@ Edit `src/main/resources/application.yaml` to change.
 |----------|-------------|
 | `POST /api/invoices` | Done        |
 | `GET /api/invoices` | Done        |
-| `GET /api/invoices/{id}` | In progress |
+| `GET /api/invoices/{id}` | Done |
 | `PUT /api/invoices/{id}` | Done        |
-| `DELETE /api/invoices/{id}` | Not started |
+| `DELETE /api/invoices/{id}` | Done |
 | Invoice filtering | Not started |
 
 ### Sales & Purchases API

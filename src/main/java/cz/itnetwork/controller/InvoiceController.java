@@ -33,6 +33,15 @@ public class InvoiceController {
     public InvoiceDTO editInvoice(@PathVariable Long invoiceId, @RequestBody InvoiceDTO invoiceDTO){
         return invoiceService.editInvoice(invoiceId, invoiceDTO);
     }
+    @GetMapping("/invoices/{invoiceId}")
+    public InvoiceDTO getInvoiceDetail(@PathVariable Long invoiceId){
+        return invoiceService.getInvoiceDetail(invoiceId);
+    }
+    @DeleteMapping("/invoices/{invoiceId}")
+    public ResponseEntity<Void> deleteInvoice(@PathVariable Long invoiceId) {
+        invoiceService.deleteInvoice(invoiceId);
+        return ResponseEntity.noContent().build();
+    }
 
 
 

@@ -52,6 +52,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
         return result;
     }
+
     @Override
     public InvoiceDTO editInvoice(Long invoiceId, InvoiceDTO invoiceDTO) {
         if (!invoiceRepository.existsById(invoiceId)) {
@@ -69,11 +70,20 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceMapper.toDTO(saved);
 
     }
+
     @Override
     public InvoiceDTO getInvoiceDetail(Long invoiceId) {
-        InvoiceEntity invoice = invoiceRepository.getReferenceById(invoiceId);
+        InvoiceEntity invoice = invoiceRepository.findById(invoiceId)
+                .orElseThrow(() -> new NotFoundException("Invoice not found"));
         return invoiceMapper.toDTO(invoice);
+
     }
+    @Override
+    public void deleteInvoice(Long invoiceId) {
+        invoiceRepository.deleteById(invoiceId);
+    }
+
+
 
 
 }
