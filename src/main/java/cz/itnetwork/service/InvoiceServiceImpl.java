@@ -2,12 +2,16 @@ package cz.itnetwork.service;
 
 
 import cz.itnetwork.dto.InvoiceDTO;
+import cz.itnetwork.dto.InvoiceStatisticsDTO;
 import cz.itnetwork.dto.mapper.InvoiceMapper;
 import cz.itnetwork.entity.InvoiceEntity;
 import cz.itnetwork.entity.PersonEntity;
+import cz.itnetwork.entity.filter.InvoiceFilter;
+import cz.itnetwork.entity.filter.InvoiceSpecification;
 import cz.itnetwork.entity.repository.InvoiceRepository;
 import cz.itnetwork.entity.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
@@ -24,7 +28,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     private InvoiceRepository invoiceRepository;
 
     @Autowired
-
     private PersonRepository personRepository;
 
     @Override
@@ -44,11 +47,19 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public List<InvoiceDTO> getAllInvoices() {
-        List<InvoiceDTO> result = new ArrayList<>();
-        for (InvoiceEntity invoice : invoiceRepository.findAll()) {
-            result.add(invoiceMapper.toDTO(invoice));
+    public List<InvoiceDTO> getAllInvoices(InvoiceFilter filter) {
+        InvoiceSpecification specification = new InvoiceSpecification(filter);
 
+        List<InvoiceEntity> invoices;
+        if (filter.getLimit() != null) {
+            invoices = invoiceRepository.findAll(specification, PageRequest.of(0, filter.getLimit())).getContent();
+        } else {
+            invoices = invoiceRepository.findAll(specification);
+        }
+
+        List<InvoiceDTO> result = new ArrayList<>();
+        for (InvoiceEntity invoice : invoices) {
+            result.add(invoiceMapper.toDTO(invoice));
         }
         return result;
     }
@@ -78,6 +89,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceMapper.toDTO(invoice);
 
     }
+
     @Override
     public void deleteInvoice(Long invoiceId) {
         invoiceRepository.deleteById(invoiceId);
@@ -91,6 +103,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
         return result;
     }
+
     @Override
     public List<InvoiceDTO> getInvoicesByBuyer(String identificationNumber) {
         List<InvoiceDTO> result = new ArrayList<>();
@@ -100,9 +113,13 @@ public class InvoiceServiceImpl implements InvoiceService {
         return result;
     }
 
-
-
-
-
+    @Override
+    public InvoiceStatisticsDTO getInvoiceStatistics() {
+        InvoiceStatisticsDTO statistics = new InvoiceStatisticsDTO();
+        statistics.setCurrentYearSum(invoiceRepository.getCurrentYearSum());
+        statistics.setAllTimeSum(invoiceRepository.getAllTimeSum());
+        statistics.setInvoicesCount(invoiceRepository.getInvoicesCount());
+        return statistics;
+    }
 
 }

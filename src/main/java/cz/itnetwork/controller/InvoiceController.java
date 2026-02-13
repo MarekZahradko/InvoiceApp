@@ -2,10 +2,11 @@ package cz.itnetwork.controller;
 
 
 import cz.itnetwork.dto.InvoiceDTO;
+import cz.itnetwork.dto.InvoiceStatisticsDTO;
+import cz.itnetwork.entity.filter.InvoiceFilter;
 import cz.itnetwork.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,8 +27,13 @@ public class InvoiceController {
 
     }
     @GetMapping("/invoices")
-    public List<InvoiceDTO> getAllInvoices() {
-        return invoiceService.getAllInvoices();
+    public List<InvoiceDTO> getAllInvoices(InvoiceFilter filter) {
+        return invoiceService.getAllInvoices(filter);
+    }
+
+    @GetMapping("/invoices/statistics")
+    public InvoiceStatisticsDTO getInvoiceStatistics() {
+        return invoiceService.getInvoiceStatistics();
     }
     @PutMapping("/invoices/{invoiceId}")
     public InvoiceDTO editInvoice(@PathVariable Long invoiceId, @RequestBody InvoiceDTO invoiceDTO){

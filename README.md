@@ -50,14 +50,14 @@ Edit `src/main/resources/application.yaml` to change.
 | `DELETE /api/persons/{id}` | Done |
 
 ### Invoices API
-| Endpoint | Status      |
-|----------|-------------|
-| `POST /api/invoices` | Done        |
-| `GET /api/invoices` | Done        |
+| Endpoint | Status |
+|----------|--------|
+| `POST /api/invoices` | Done |
+| `GET /api/invoices` | Done |
 | `GET /api/invoices/{id}` | Done |
-| `PUT /api/invoices/{id}` | Done        |
+| `PUT /api/invoices/{id}` | Done |
 | `DELETE /api/invoices/{id}` | Done |
-| Invoice filtering | Not started |
+| `GET /api/invoices?buyerID=&sellerID=&product=&minPrice=&maxPrice=&limit=` | Done |
 
 ### Sales & Purchases API
 | Endpoint | Status |
@@ -68,8 +68,8 @@ Edit `src/main/resources/application.yaml` to change.
 ### Statistics API
 | Endpoint | Status |
 |----------|--------|
-| `GET /api/invoices/statistics` | Not started |
-| `GET /api/persons/statistics` | Not started |
+| `GET /api/invoices/statistics` | Done |
+| `GET /api/persons/statistics` | Done |
 
 ## License
 
