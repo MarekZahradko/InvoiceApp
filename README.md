@@ -58,6 +58,6 @@ Include the token in requests: `Authorization: Bearer <token>`
 - **Swagger UI**: http://localhost:8080/swagger-ui.html (requires running backend)
 - **Static docs**: [backend/docs/API.md](backend/docs/API.md)
 
-## License
+## Credits
 
-MIT
+Based on a starter project from [ITnetwork.cz](https://www.itnetwork.cz/), extended with additional features.
