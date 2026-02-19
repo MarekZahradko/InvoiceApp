@@ -4,7 +4,7 @@ RESTful API for managing invoices and persons (clients/vendors).
 
 ## Tech Stack
 
-Java 17 | Spring Boot 3.0 | MySQL | MapStruct | Lombok
+Java 17 | Spring Boot 3.0 | Spring Security | JWT | MySQL | MapStruct | Lombok
 
 ## Quick Start
 
@@ -32,6 +32,28 @@ Default config (auto-creates database):
 - Password: *(empty)*
 
 Edit `src/main/resources/application.yaml` to change.
+
+## Authentication
+
+The API uses JWT-based authentication with role-based access control.
+
+### Roles
+- **USER** — read-only access (default on registration)
+- **ADMIN** — full access (set manually in DB: `UPDATE user SET role = 'ADMIN' WHERE email = '...'`)
+
+### Endpoints
+| Endpoint | Description |
+|----------|-------------|
+| `POST /api/auth/register` | Register (returns JWT token) |
+| `POST /api/auth/login` | Login (returns JWT token) |
+
+### Usage
+Include the token in the `Authorization` header:
+```
+Authorization: Bearer <token>
+```
+
+Unauthenticated requests to protected endpoints return `403`.
 
 ## API Documentation
 
@@ -62,8 +84,14 @@ Edit `src/main/resources/application.yaml` to change.
 ### Sales & Purchases API
 | Endpoint | Status |
 |----------|--------|
-| `GET /api/identification/{id}/sales` | Done |
-| `GET /api/identification/{id}/purchases` | Done |
+| `GET /api/identification/{identificationNumber}/sales` | Done |
+| `GET /api/identification/{identificationNumber}/purchases` | Done |
+
+### Authentication API
+| Endpoint | Status |
+|----------|--------|
+| `POST /api/auth/register` | Done |
+| `POST /api/auth/login` | Done |
 
 ### Statistics API
 | Endpoint | Status |

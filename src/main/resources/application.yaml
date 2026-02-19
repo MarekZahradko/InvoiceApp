@@ -20,3 +20,7 @@ spring:
   jackson:
     mapper:
       accept-case-insensitive-enums: true
+
+jwt:
+  secret: dGhpcyBpcyBhIHNlY3VyZSBiYXNlNjQga2V5IGZvciBqd3QgdG9rZW4gc2lnbmluZw==
+  expiration: 86400000
