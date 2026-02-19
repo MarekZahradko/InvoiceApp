@@ -4,6 +4,50 @@ Base URL: `http://localhost:8080/api`
 
 For interactive documentation, see [Swagger UI](http://localhost:8080/swagger-ui.html) when the application is running.
 
+## Authentication
+
+JWT-based authentication with role-based access control.
+
+### Register
+```
+POST /api/auth/register
+```
+
+**Request Body:**
+```json
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response:** `200 OK` with JWT token
+
+### Login
+```
+POST /api/auth/login
+```
+
+**Request Body:** Same as Register
+
+**Response:** `200 OK` with JWT token
+
+### Usage
+
+Include the token in the `Authorization` header:
+```
+Authorization: Bearer <token>
+```
+
+Unauthenticated requests to protected endpoints return `403`.
+
+### Roles
+
+- **USER** — read-only access (default on registration)
+- **ADMIN** — full access (set manually in DB: `UPDATE user SET role = 'ADMIN' WHERE email = '...'`)
+
+---
+
 ## Persons
 
 ### Create Person

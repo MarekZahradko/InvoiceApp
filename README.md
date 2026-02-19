@@ -9,11 +9,6 @@ Full-stack application for managing invoices and persons (clients/vendors).
 
 ## Quick Start
 
-### Prerequisites
-
-- Java 17+, Maven 3.6+, MySQL 8.0+
-- Node.js 18+, npm 9+
-
 ### Backend
 
 ```bash
@@ -21,11 +16,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-Server starts at **http://localhost:8080**
-
-Default database config (auto-creates `InvoiceDatabase`):
-- Username: `root` / Password: *(empty)*
-- Edit `backend/src/main/resources/application.yaml` to change.
+Runs at **http://localhost:8080** — requires Java 17+, Maven 3.6+, MySQL 8.0+.
 
 ### Frontend
 
@@ -35,28 +26,12 @@ npm install
 npm run dev
 ```
 
-Dev server starts at **http://localhost:5173**
+Runs at **http://localhost:5173** — requires Node.js 18+.
 
-## Authentication
+## Documentation
 
-The API uses JWT-based authentication with role-based access control.
-
-| Endpoint | Description |
-|----------|-------------|
-| `POST /api/auth/register` | Register (returns JWT) |
-| `POST /api/auth/login` | Login (returns JWT) |
-
-Include the token in requests: `Authorization: Bearer <token>`
-
-### Roles
-
-- **USER** — read-only access (default on registration)
-- **ADMIN** — full access (set manually in DB)
-
-## API Documentation
-
-- **Swagger UI**: http://localhost:8080/swagger-ui.html (requires running backend)
-- **Static docs**: [backend/docs/API.md](backend/docs/API.md)
+- [API & Authentication](backend/docs/API.md)
+- [Swagger UI](http://localhost:8080/swagger-ui.html) (requires running backend)
 
 ## Credits
 
