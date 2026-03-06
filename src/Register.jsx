@@ -27,21 +27,30 @@ import {AuthContext} from "./utils/AuthContext";
 import InputField from "./components/InputField";
 import FlashMessage from "./components/FlashMessage";
 
+// form for registering new user
 const Register = () => {
+    // hook for navigation
     const navigate = useNavigate();
+    // login function from context
     const {login} = useContext(AuthContext);
+    // registration credentials
     const [credentials, setCredentials] = useState({
         email: "",
         password: "",
         passwordConfirm: ""
     });
+    // submission state
     const [sentState, setSent] = useState(false);
+    // success state
     const [successState, setSuccess] = useState(false);
+    // error
     const [errorState, setError] = useState(null);
 
+    // handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // verify password match
         if (credentials.password !== credentials.passwordConfirm) {
             setError("Passwords do not match");
             setSent(true);
@@ -49,6 +58,7 @@ const Register = () => {
             return;
         }
 
+        // send registration data to server
         fetch("http://localhost:8080/api/auth/register", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -66,7 +76,9 @@ const Register = () => {
             .then((data) => {
                 setSent(true);
                 setSuccess(true);
+                // auto login after registration
                 login(data.token, {email: credentials.email});
+                // redirect to dashboard
                 setTimeout(() => navigate("/dashboard"), 1500);
             })
             .catch((error) => {
@@ -76,6 +88,7 @@ const Register = () => {
             });
     };
 
+    // shorten state names
     const sent = sentState;
     const success = successState;
 
@@ -144,4 +157,5 @@ const Register = () => {
     );
 };
 
+// export Register component
 export default Register;

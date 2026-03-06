@@ -24,14 +24,19 @@ import React, {useContext} from "react";
 import {Navigate} from "react-router-dom";
 import {AuthContext} from "./AuthContext";
 
+// component to protect routes requiring authentication
 export const ProtectedRoute = ({children}) => {
+    // load authentication state from context
     const {isAuthenticated, loading} = useContext(AuthContext);
 
+    // display loading while checking authentication
     if (loading) {
         return <div>Loading...</div>;
     }
 
+    // redirect to login if not authenticated
     return isAuthenticated ? children : <Navigate to="/login"/>;
 };
 
+// export ProtectedRoute component
 export default ProtectedRoute;

@@ -31,9 +31,13 @@ import FlashMessage from "../components/FlashMessage";
 
 import Country from "./Country";
 
+// form for creating and editing person
 const PersonForm = () => {
+    // hook for navigation between pages
     const navigate = useNavigate();
+    // person ID from URL parameters
     const {id} = useParams();
+    // person data
     const [person, setPerson] = useState({
         name: "",
         identificationNumber: "",
@@ -49,19 +53,25 @@ const PersonForm = () => {
         country: Country.CZECHIA,
         note: ""
     });
+    // state of form submission
     const [sentState, setSent] = useState(false);
+    // state of submission success
     const [successState, setSuccess] = useState(false);
+    // error message
     const [errorState, setError] = useState(null);
 
+    // load person from API if editing
     useEffect(() => {
         if (id) {
             apiGet("/api/persons/" + id).then((data) => setPerson(data));
         }
     }, [id]);
 
+    // handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // send to API
         (id ? apiPut("/api/persons/" + id, person) : apiPost("/api/persons", person))
             .then((data) => {
                 setSent(true);
@@ -76,9 +86,11 @@ const PersonForm = () => {
             });
     };
 
+    // shorten state names for JSX
     const sent = sentState;
     const success = successState;
 
+    // render form
     return (
         <div>
             <h1>{id ? "Upravit" : "Vytvořit"} osobnost</h1>
@@ -272,6 +284,7 @@ const PersonForm = () => {
                 />
 
                 <input type="submit" className="btn btn-primary" value="Uložit"/>
+                // export PersonForm component
             </form>
         </div>
     );

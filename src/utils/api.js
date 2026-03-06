@@ -21,42 +21,57 @@
  */
 
 
+// base API URL for the server
 const API_URL = "http://localhost:8080";
 
+// function to get headers with authentication token
 const getHeaders = () => {
+    // load token from local storage
     const token = localStorage.getItem('authToken');
+    // basic headers for JSON communication
     const headers = {
         "Content-Type": "application/json"
     };
+    // add authorization token if it exists
     if (token) {
         headers["Authorization"] = `Bearer ${token}`;
     }
     return headers;
 };
 
+// generic fetch function with error handling
 const fetchData = (url, requestOptions) => {
+    // complete the URL address
     const apiUrl = `${API_URL}${url}`;
 
+    // send request to server
     return fetch(apiUrl, requestOptions)
         .then((response) => {
+            // check request success
             if (!response.ok) {
                 throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
             }
 
+            // parse JSON response (except DELETE)
             if (requestOptions.method !== 'DELETE')
                 return response.json();
         })
         .catch((error) => {
+            // propagate error
             throw error;
         });
 };
 
+// GET request with filters
 export const apiGet = (url, params) => {
+    // filter empty parameters
     const filteredParams = Object.fromEntries(
         Object.entries(params || {}).filter(([_, value]) => value != null)
     );
 
+    // create URL with parameters
     const apiUrl = `${url}?${new URLSearchParams(filteredParams)}`;
+    // set options for GET
     const requestOptions = {
         method: "GET",
         headers: getHeaders()
@@ -65,7 +80,9 @@ export const apiGet = (url, params) => {
     return fetchData(apiUrl, requestOptions);
 };
 
+// POST request for creating records
 export const apiPost = (url, data) => {
+    // set options for POST
     const requestOptions = {
         method: "POST",
         headers: getHeaders(),
@@ -75,7 +92,9 @@ export const apiPost = (url, data) => {
     return fetchData(url, requestOptions);
 };
 
+// PUT request for editing records
 export const apiPut = (url, data) => {
+    // set options for PUT
     const requestOptions = {
         method: "PUT",
         headers: getHeaders(),
@@ -85,7 +104,9 @@ export const apiPut = (url, data) => {
     return fetchData(url, requestOptions);
 };
 
+// DELETE request for deleting records
 export const apiDelete = (url) => {
+    // set options for DELETE
     const requestOptions = {
         method: "DELETE",
         headers: getHeaders()

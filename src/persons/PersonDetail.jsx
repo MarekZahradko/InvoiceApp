@@ -164,4 +164,5 @@ const PersonDetail = () => {
     );
 };
 
+// export PersonDetail component
 export default PersonDetail;

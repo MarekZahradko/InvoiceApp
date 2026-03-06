@@ -30,10 +30,15 @@ import InputField from "../components/InputField";
 import InputSelect from "../components/InputSelect";
 import FlashMessage from "../components/FlashMessage";
 
+// form for creating and editing invoice
 const InvoiceForm = () => {
+    // hook for navigation between pages
     const navigate = useNavigate();
+    // invoice ID from URL parameters
     const {id} = useParams();
+    // list of persons to select seller and buyer
     const [persons, setPersons] = useState([]);
+    // invoice data
     const [invoice, setInvoice] = useState({
         invoiceNumber: "",
         seller: "",
@@ -45,14 +50,19 @@ const InvoiceForm = () => {
         vat: "21",
         note: ""
     });
+    // state of form submission
     const [sentState, setSent] = useState(false);
+    // state of submission success
     const [successState, setSuccess] = useState(false);
+    // error message
     const [errorState, setError] = useState(null);
 
+    // load list of persons on initialization
     useEffect(() => {
         apiGet("/api/persons").then((data) => setPersons(data));
     }, []);
 
+    // load invoice from API if editing
     useEffect(() => {
         if (id) {
             apiGet("/api/invoices/" + id).then((data) => {
@@ -67,9 +77,11 @@ const InvoiceForm = () => {
         }
     }, [id]);
 
+    // handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // prepare data for submission - transform objects and numbers
         const invoiceData = {
             ...invoice,
             seller: {_id: invoice.seller},
@@ -78,6 +90,7 @@ const InvoiceForm = () => {
             vat: parseFloat(invoice.vat)
         };
 
+        // send to API
         (id ? apiPut("/api/invoices/" + id, invoiceData) : apiPost("/api/invoices", invoiceData))
             .then((data) => {
                 setSent(true);
@@ -92,9 +105,11 @@ const InvoiceForm = () => {
             });
     };
 
+    // shorten state names for JSX
     const sent = sentState;
     const success = successState;
 
+    // render form
     return (
         <div>
             <h1>{id ? "Upravit" : "Vytvořit"} fakturu</h1>
@@ -219,4 +234,5 @@ const InvoiceForm = () => {
     );
 };
 
+// export InvoiceForm component
 export default InvoiceForm;

@@ -24,15 +24,20 @@ import React, {useEffect, useState} from "react";
 
 import {apiGet} from "../utils/api";
 
+// invoice statistics
 const InvoiceStatistics = () => {
+    // state with statistics
     const [stats, setStats] = useState({});
 
+    // load statistics from API
     useEffect(() => {
         apiGet("/api/invoices/statistics").then((data) => setStats(data));
     }, []);
 
+    // render statistics in cards
     return (
         <div className="row mt-4">
+            {/* invoice count */}
             <div className="col-md-4">
                 <div className="card">
                     <div className="card-header">
@@ -43,6 +48,7 @@ const InvoiceStatistics = () => {
                     </div>
                 </div>
             </div>
+            {/* current year sum */}
             <div className="col-md-4">
                 <div className="card">
                     <div className="card-header">
@@ -55,6 +61,7 @@ const InvoiceStatistics = () => {
                     </div>
                 </div>
             </div>
+            {/* all time sum */}
             <div className="col-md-4">
                 <div className="card">
                     <div className="card-header">
@@ -71,4 +78,5 @@ const InvoiceStatistics = () => {
     );
 };
 
+// export InvoiceStatistics component
 export default InvoiceStatistics;

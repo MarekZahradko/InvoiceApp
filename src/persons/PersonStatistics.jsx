@@ -24,19 +24,24 @@ import React, {useEffect, useState} from "react";
 
 import {apiGet} from "../utils/api";
 
+// statistics - sales for individual persons
 const PersonStatistics = () => {
+    // list of statistics
     const [stats, setStats] = useState([]);
 
+    // load statistics from API
     useEffect(() => {
         apiGet("/api/persons/statistics").then((data) => setStats(data));
     }, []);
 
+    // render statistics in table
     return (
         <div className="card mt-4">
             <div className="card-header">
                 <h5>Tržby jednotlivých osob</h5>
             </div>
             <div className="card-body">
+                {/* display table if data exists */}
                 {stats.length > 0 ? (
                     <table className="table table-bordered">
                         <thead>
@@ -47,6 +52,7 @@ const PersonStatistics = () => {
                         </tr>
                         </thead>
                         <tbody>
+                        {/* render rows for each person */}
                         {stats.map((stat) => (
                             <tr key={stat.personId}>
                                 <td>{stat.personId}</td>
@@ -64,4 +70,5 @@ const PersonStatistics = () => {
     );
 };
 
+// export PersonStatistics component
 export default PersonStatistics;

@@ -25,13 +25,17 @@ import {Link} from "react-router-dom";
 
 import {dateStringFormatter} from "../utils/dateStringFormatter";
 
+// table with invoice list
 const InvoiceTable = ({label, items, deleteInvoice}) => {
+    // render table
     return (
         <div>
+            {/* label for number of records */}
             <p>
                 {label} {items.length}
             </p>
 
+            {/* table with invoices */}
             <table className="table table-bordered">
                 <thead>
                 <tr>
@@ -45,6 +49,7 @@ const InvoiceTable = ({label, items, deleteInvoice}) => {
                 </tr>
                 </thead>
                 <tbody>
+                {/* render rows for each invoice */}
                 {items.map((item, index) => (
                     <tr key={index + 1}>
                         <td>{index + 1}</td>
@@ -70,6 +75,7 @@ const InvoiceTable = ({label, items, deleteInvoice}) => {
                         <td>{item.price} Kč</td>
                         <td>{dateStringFormatter(item.issued, true)}</td>
                         <td>
+                            {/* buttons for detail, edit and delete */}
                             <div className="btn-group">
                                 <Link
                                     to={"/invoices/show/" + item._id}
@@ -95,6 +101,7 @@ const InvoiceTable = ({label, items, deleteInvoice}) => {
                 ))}
                 </tbody>
             </table>
+            {/* button to create new invoice */}
             <Link to={"/invoices/create"} className="btn btn-success">
                 Nová faktura
             </Link>
@@ -102,4 +109,5 @@ const InvoiceTable = ({label, items, deleteInvoice}) => {
     );
 };
 
+// export InvoiceTable component
 export default InvoiceTable;

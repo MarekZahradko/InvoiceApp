@@ -1,12 +1,17 @@
 import React from "react";
 
 export function InputSelect(props) {
+  // flag for multiple select
   const multiple = props.multiple;
+  // flag for required field
   const required = props.required || false;
 
+  // flag to mark empty value
   const emptySelected = multiple ? props.value?.length === 0 : !props.value;
+  // flag for object structure of items
   const objectItems = props.enum ? false : true;
 
+  // render form group with select
   return (
     <div className="form-group">
       <label>{props.label}:</label>
@@ -48,4 +53,5 @@ export function InputSelect(props) {
   );
 }
 
+// export InputSelect component
 export default InputSelect;

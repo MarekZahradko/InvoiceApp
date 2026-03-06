@@ -26,16 +26,22 @@ import {useParams, Link} from "react-router-dom";
 import {apiGet} from "../utils/api";
 import {dateStringFormatter} from "../utils/dateStringFormatter";
 
+// invoice detail with VAT price calculation
 const InvoiceDetail = () => {
+    // invoice ID from URL
     const {id} = useParams();
+    // invoice data
     const [invoice, setInvoice] = useState({});
 
+    // load invoice from API
     useEffect(() => {
         apiGet("/api/invoices/" + id).then((data) => setInvoice(data));
     }, [id]);
 
+    // calculate price with VAT
     const totalPrice = invoice.price ? invoice.price + (invoice.price * invoice.vat) / 100 : 0;
 
+    // render invoice detail
     return (
         <div>
             <h1>Detail faktury</h1>
@@ -101,4 +107,5 @@ const InvoiceDetail = () => {
         </div>
     );
 };
+// export InvoiceDetail component
 export default InvoiceDetail;

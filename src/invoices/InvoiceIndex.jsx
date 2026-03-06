@@ -27,8 +27,11 @@ import InputField from "../components/InputField";
 
 import InvoiceTable from "./InvoiceTable";
 
+// list with filter and display all invoices
 const InvoiceIndex = () => {
+    // list of invoices
     const [invoices, setInvoices] = useState([]);
+    // filter for search
     const [filter, setFilter] = useState({
         product: "",
         minPrice: "",
@@ -36,6 +39,7 @@ const InvoiceIndex = () => {
         limit: ""
     });
 
+    // function to delete invoice
     const deleteInvoice = async (id) => {
         try {
             await apiDelete("/api/invoices/" + id);
@@ -43,27 +47,33 @@ const InvoiceIndex = () => {
             console.log(error.message);
             alert(error.message)
         }
+        // remove invoice from list
         setInvoices(invoices.filter((item) => item._id !== id));
     };
 
+    // function to load invoices with filter
     const loadInvoices = () => {
         apiGet("/api/invoices", filter).then((data) => setInvoices(data));
     };
 
+    // load invoices on initialization
     useEffect(() => {
         loadInvoices();
     }, []);
 
+    // update filter value
     const handleFilter = (e) => {
         const {name, value} = e.target;
         setFilter({...filter, [name]: value});
     };
 
+    // submit filter
     const handleFilterSubmit = (e) => {
         e.preventDefault();
         loadInvoices();
     };
 
+    // render list
     return (
         <div>
             <h1>Seznam faktur</h1>
@@ -129,4 +139,5 @@ const InvoiceIndex = () => {
         </div>
     );
 };
+// export InvoiceIndex component
 export default InvoiceIndex;
