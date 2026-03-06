@@ -27,9 +27,12 @@ import {apiDelete, apiGet} from "../utils/api";
 import PersonTable from "./PersonTable";
 import PersonStatistics from "./PersonStatistics";
 
+// list of all persons with statistics
 const PersonIndex = () => {
+    // list of persons
     const [persons, setPersons] = useState([]);
 
+    // function to delete person
     const deletePerson = async (id) => {
         try {
             await apiDelete("/api/persons/" + id);
@@ -37,13 +40,16 @@ const PersonIndex = () => {
             console.log(error.message);
             alert(error.message)
         }
+        // remove person from list
         setPersons(persons.filter((item) => item._id !== id));
     };
 
+    // load persons on initialization
     useEffect(() => {
         apiGet("/api/persons").then((data) => setPersons(data));
     }, []);
 
+    // render list with statistics
     return (
         <div>
             <h1>Seznam osob</h1>
@@ -56,4 +62,5 @@ const PersonIndex = () => {
         </div>
     );
 };
+// export PersonIndex component
 export default PersonIndex;

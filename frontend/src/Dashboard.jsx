@@ -25,15 +25,20 @@ import React from "react";
 import InvoiceStatistics from "./invoices/InvoiceStatistics";
 import PersonStatistics from "./persons/PersonStatistics";
 
+// main page - dashboard with statistics
 const Dashboard = () => {
+    // render dashboard with statistics
     return (
         <div>
-            <h1>Statistiky</h1>
+            <h1>Statistics</h1>
             <hr/>
+            {/* statistics for invoices */}
             <InvoiceStatistics />
+            {/* statistics for persons */}
             <PersonStatistics />
         </div>
     );
 };
 
+// export Dashboard component
 export default Dashboard;

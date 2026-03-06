@@ -48,7 +48,7 @@ const PersonDetail = () => {
     const country = Country.CZECHIA === person.country ? "Česká republika" : "Slovensko";
 
     return (
-        <>
+        <div>
             <div>
                 <h1>Detail osoby</h1>
                 <hr/>
@@ -160,8 +160,9 @@ const PersonDetail = () => {
                     <p className="text-muted">Žádné koupené faktury</p>
                 )}
             </div>
-        </>
+        </div>
     );
 };
 
+// export PersonDetail component
 export default PersonDetail;

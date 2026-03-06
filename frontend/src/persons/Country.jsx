@@ -20,9 +20,13 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
+// enum of supported countries
 const Country = Object.freeze({
+    // czech republic
     CZECHIA: 'CZECHIA',
+    // slovakia
     SLOVAKIA: 'SLOVAKIA',
 });
 
+// export country enum
 export default Country;

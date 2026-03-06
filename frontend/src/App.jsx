@@ -44,35 +44,45 @@ import Register from "./Register";
 import { AuthProvider, AuthContext } from "./utils/AuthContext";
 import ProtectedRoute from "./utils/ProtectedRoute";
 
+// main application component - defines routing and layout
 export function App() {
+  // return application with routing and protected pages
   return (
     <AuthProvider>
       <Router>
         <div className="container">
+          {/* navigation bar */}
           <nav className="navbar navbar-expand-lg navbar-light bg-light">
             <ul className="navbar-nav mr-auto">
+              {/* link to dashboard */}
               <li className="nav-item">
                 <Link to={"/dashboard"} className="nav-link">
-                  Statistiky
+                  Statistics
                 </Link>
               </li>
+              {/* link to persons list */}
               <li className="nav-item">
                 <Link to={"/persons"} className="nav-link">
-                  Osoby
+                  Persons
                 </Link>
               </li>
+              {/* link to invoices list */}
               <li className="nav-item">
                 <Link to={"/invoices"} className="nav-link">
-                  Faktury
+                  Invoices
                 </Link>
               </li>
             </ul>
+            {/* logout button */}
             <AuthLogout />
           </nav>
 
+          {/* define routes */}
           <Routes>
+            {/* public routes */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            {/* redirect from root to dashboard */}
             <Route
               index
               element={
@@ -81,6 +91,7 @@ export function App() {
                 </ProtectedRoute>
               }
             />
+            {/* dashboard with statistics */}
             <Route
               path="/dashboard"
               element={
@@ -89,6 +100,7 @@ export function App() {
                 </ProtectedRoute>
               }
             />
+            {/* routes for persons */}
             <Route
               path="/persons"
               element={
@@ -121,6 +133,7 @@ export function App() {
                 </ProtectedRoute>
               }
             />
+            {/* routes for invoices */}
             <Route
               path="/invoices"
               element={
@@ -160,25 +173,35 @@ export function App() {
   );
 }
 
+// component for user logout
 function AuthLogout() {
+  // get authentication state from context
   const { isAuthenticated, logout, user } = useContext(AuthContext);
 
-  if (!isAuthenticated) return null;
-
+  // render logout button if user is logged in
   return (
     <div className="ms-auto d-flex align-items-center">
-      {user && <span className="me-3 text-muted">{user.email}</span>}
-      <button
-        className="btn btn-sm btn-outline-danger"
-        onClick={() => {
-          logout();
-          window.location.href = "/login";
-        }}
-      >
-        Logout
-      </button>
+      {isAuthenticated && user ? (
+        <>
+          {/* display user email */}
+          <span className="me-3 text-muted">{user.email}</span>
+          {/* logout button */}
+          <button
+            className="btn btn-sm btn-outline-danger"
+            onClick={() => {
+              logout();
+              window.location.href = "/login";
+            }}
+          >
+            Logout
+          </button>
+        </>
+      ) : (
+        <span className="me-3 text-muted">Logged in</span>
+      )}
     </div>
   );
 }
 
+// export main application component
 export default App;

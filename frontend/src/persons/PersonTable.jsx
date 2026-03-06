@@ -23,13 +23,17 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
+// table with person list
 const PersonTable = ({label, items, deletePerson}) => {
+    // render table
     return (
         <div>
+            {/* label for number of records */}
             <p>
                 {label} {items.length}
             </p>
 
+            {/* table with persons */}
             <table className="table table-bordered">
                 <thead>
                 <tr>
@@ -39,11 +43,13 @@ const PersonTable = ({label, items, deletePerson}) => {
                 </tr>
                 </thead>
                 <tbody>
+                {/* render rows for each person */}
                 {items.map((item, index) => (
                     <tr key={index + 1}>
                         <td>{index + 1}</td>
                         <td>{item.name}</td>
                         <td>
+                            {/* buttons for detail, edit and delete */}
                             <div className="btn-group">
                                 <Link
                                     to={"/persons/show/" + item._id}
@@ -69,6 +75,7 @@ const PersonTable = ({label, items, deletePerson}) => {
                 ))}
                 </tbody>
             </table>
+            {/* button to create new person */}
             <Link to={"/persons/create"} className="btn btn-success">
                 Nová osoba
             </Link>
@@ -76,4 +83,5 @@ const PersonTable = ({label, items, deletePerson}) => {
     );
 };
 
+// export PersonTable component
 export default PersonTable;

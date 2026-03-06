@@ -22,16 +22,25 @@
 
 import React, {createContext, useState, useEffect} from "react";
 
+// create context for authentication
 export const AuthContext = createContext();
 
+// provider for authentication context
 export const AuthProvider = ({children}) => {
+    // authentication state
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    // state for loading data from storage
     const [loading, setLoading] = useState(true);
+    // state for user data
     const [user, setUser] = useState(null);
 
+    // check authentication on component load
     useEffect(() => {
+        // load token and data from local storage
         const token = localStorage.getItem('authToken');
         const userData = localStorage.getItem('user');
+        console.log("AuthContext init:", {token, userData});
+        // set state if token exists
         if (token) {
             setIsAuthenticated(true);
             if (userData) {
@@ -41,20 +50,28 @@ export const AuthProvider = ({children}) => {
         setLoading(false);
     }, []);
 
+    // function to login user
     const login = (token, userData) => {
+        console.log("Login called with:", {token, userData});
+        // save token and data to local storage
         localStorage.setItem('authToken', token);
         localStorage.setItem('user', JSON.stringify(userData));
+        // set authentication state
         setIsAuthenticated(true);
         setUser(userData);
     };
 
+    // function to logout user
     const logout = () => {
+        // delete token and data from local storage
         localStorage.removeItem('authToken');
         localStorage.removeItem('user');
+        // reset authentication state
         setIsAuthenticated(false);
         setUser(null);
     };
 
+    // return provider with context values
     return (
         <AuthContext.Provider value={{isAuthenticated, login, logout, loading, user}}>
             {children}

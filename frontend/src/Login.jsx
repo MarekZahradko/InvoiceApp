@@ -27,20 +27,29 @@ import {AuthContext} from "./utils/AuthContext";
 import InputField from "./components/InputField";
 import FlashMessage from "./components/FlashMessage";
 
+// formulář pro přihlášení uživatele
 const Login = () => {
+    // hook pro navigaci
     const navigate = useNavigate();
+    // funkce pro přihlášení z kontextu
     const {login} = useContext(AuthContext);
+    // údaje pro přihlášení
     const [credentials, setCredentials] = useState({
         email: "",
         password: ""
     });
+    // stav odeslání
     const [sentState, setSent] = useState(false);
+    // stav úspěšnosti
     const [successState, setSuccess] = useState(false);
+    // error
     const [errorState, setError] = useState(null);
 
+    // handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        // send login credentials to server
         fetch("http://localhost:8080/api/auth/login", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -55,19 +64,24 @@ const Login = () => {
             .then((data) => {
                 setSent(true);
                 setSuccess(true);
-                login(data.token, {email: data.email});
+                console.log("Calling login with:", {token: data.token, email: credentials.email});
+                // save token and login
+                login(data.token, {email: credentials.email});
+                // redirect to dashboard
                 setTimeout(() => navigate("/dashboard"), 1500);
             })
             .catch((error) => {
                 setSent(true);
                 setSuccess(false);
-                setError(error.message || "Chyba při přihlášení");
+                setError(error.message || "Error logging in");
             });
     };
 
+    // shorten state names
     const sent = sentState;
     const success = successState;
 
+    // render form
     return (
         <div className="container mt-5">
             <div className="row justify-content-center">
@@ -123,4 +137,5 @@ const Login = () => {
     );
 };
 
+// export Login component
 export default Login;

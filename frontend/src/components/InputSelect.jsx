@@ -1,14 +1,17 @@
 import React from "react";
 
 export function InputSelect(props) {
+  // flag for multiple select
   const multiple = props.multiple;
+  // flag for required field
   const required = props.required || false;
 
-  // příznak označení prázdné hodnoty
+  // flag to mark empty value
   const emptySelected = multiple ? props.value?.length === 0 : !props.value;
-  // příznak objektové struktury položek
+  // flag for object structure of items
   const objectItems = props.enum ? false : true;
 
+  // render form group with select
   return (
     <div className="form-group">
       <label>{props.label}:</label>
@@ -21,25 +24,25 @@ export function InputSelect(props) {
         value={props.value}
       >
         {required ? (
-          /* prázdná hodnota zakázaná (pro úpravu záznamu) */
+          /* empty value disabled (for record edit) */
           <option disabled value={emptySelected}>
             {props.prompt}
           </option>
         ) : (
-          /* prázdná hodnota povolená (pro filtrování přehledu) */
+          /* empty value allowed (for list filtering) */
           <option key={0} value={emptySelected}>
             ({props.prompt})
           </option>
         )}
 
         {objectItems
-          ? /* vykreslení položek jako objektů z databáze (osobnosti) */
+          ? /* render items as objects from database (persons) */
             props.items.map((item, index) => (
               <option key={required ? index : index + 1} value={item._id}>
                 {item.name}
               </option>
             ))
-          : /* vykreslení položek jako hodnot z výčtu (žánry) */
+          : /* render items as values from enum (genres) */
             props.items.map((item, index) => (
               <option key={required ? index : index + 1} value={item}>
                 {props.enum[item]}
@@ -50,4 +53,5 @@ export function InputSelect(props) {
   );
 }
 
+// export InputSelect component
 export default InputSelect;
