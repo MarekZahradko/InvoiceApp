@@ -18,15 +18,16 @@ Runs at **http://localhost:8080**.
 
 ## Database Configuration
 
-Configure your MySQL connection in `src/main/resources/application.properties`:
+Configure your MySQL connection in `src/main/resources/application.yaml`:
 
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/invoice_db
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+```yaml
+spring.datasource:
+  url: jdbc:mysql://localhost/InvoiceDatabase?createDatabaseIfNotExist=true
+  username: root
+  password: your_password
 ```
 
-The schema is created automatically on first run (`spring.jpa.hibernate.ddl-auto=update`).
+The database is created automatically if it doesn't exist. The schema is updated on each run (`ddl-auto: update`).
 
 ## First-Time Setup — Admin Role
 
