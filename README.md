@@ -7,40 +7,10 @@ Full-stack application for managing invoices and persons (clients/vendors).
 - **Backend**: Java 17 · Spring Boot 3.0 · Spring Security · JWT · MySQL · MapStruct
 - **Frontend**: React 18 · Vite · React Router · Bootstrap 5
 
-## Quick Start
+## Getting Started
 
-### Backend
-
-```bash
-cd backend
-mvn spring-boot:run
-```
-
-Runs at **http://localhost:8080** — requires Java 17+, Maven 3.6+, MySQL 8.0+.
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-Runs at **http://localhost:5173** — requires Node.js 18+.
-
-## First-Time Setup
-
-After registration, all users have the **USER** role (read-only).
-To grant admin access, update the role directly in the database:
-
-```sql
-UPDATE user SET role = 'ADMIN' WHERE email = 'your@email.com';
-```
-
-## Documentation
-
-- [API & Authentication](backend/docs/API.md)
-- [Swagger UI](http://localhost:8080/swagger-ui.html) (requires running backend)
+- [Backend setup](backend/README.md) — Spring Boot REST API
+- [Frontend setup](frontend/README.md) — React SPA
 
 ## Credits
 
