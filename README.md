@@ -28,6 +28,15 @@ npm run dev
 
 Runs at **http://localhost:5173** — requires Node.js 18+.
 
+## First-Time Setup
+
+After registration, all users have the **USER** role (read-only).
+To grant admin access, update the role directly in the database:
+
+```sql
+UPDATE user SET role = 'ADMIN' WHERE email = 'your@email.com';
+```
+
 ## Documentation
 
 - [API & Authentication](backend/docs/API.md)
