@@ -7,12 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Data Transfer Object representing a person (business entity).
+ * Used for both incoming requests and outgoing responses.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PersonDTO {
 
-    @JsonProperty("_id")
+    @JsonProperty("_id") // Serialized as "_id" to match the frontend convention
     private Long id;
 
     private String name;

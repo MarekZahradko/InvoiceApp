@@ -10,6 +10,10 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JPA Specification that dynamically builds a query predicate from an {@link InvoiceFilter}.
+ * Only non-null filter fields are added as conditions (AND-combined).
+ */
 public class InvoiceSpecification implements Specification<InvoiceEntity> {
 
     private final InvoiceFilter filter;
@@ -18,6 +22,10 @@ public class InvoiceSpecification implements Specification<InvoiceEntity> {
         this.filter = filter;
     }
 
+    /**
+     * Builds a compound predicate from the filter fields.
+     * Each non-null field adds one condition; all conditions are combined with AND.
+     */
     @Override
     public Predicate toPredicate(Root<InvoiceEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
@@ -31,6 +39,7 @@ public class InvoiceSpecification implements Specification<InvoiceEntity> {
         }
 
         if (filter.getProduct() != null && !filter.getProduct().isEmpty()) {
+            // Case-sensitive LIKE with wildcards on both ends
             predicates.add(criteriaBuilder.like(root.get("product"), "%" + filter.getProduct() + "%"));
         }
 

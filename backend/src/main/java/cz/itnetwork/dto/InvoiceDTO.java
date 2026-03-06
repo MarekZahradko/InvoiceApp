@@ -10,12 +10,16 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+/**
+ * Data Transfer Object representing an invoice.
+ * Used for both incoming requests and outgoing responses.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class InvoiceDTO {
 
-    @JsonProperty("_id")
+    @JsonProperty("_id") // Serialized as "_id" to match the frontend convention
     private Long id;
 
     private Integer invoiceNumber;
@@ -33,6 +37,7 @@ public class InvoiceDTO {
 
     private BigDecimal price;
 
+    /** VAT rate in percent. */
     private Integer vat;
 
     private String note;

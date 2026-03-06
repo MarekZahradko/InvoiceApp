@@ -14,6 +14,7 @@ import org.webjars.NotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Default implementation of {@link PersonService}. */
 @Service
 public class PersonServiceImpl implements PersonService {
 
@@ -23,6 +24,7 @@ public class PersonServiceImpl implements PersonService {
     @Autowired
     private PersonRepository personRepository;
 
+    /** Creates a new person by mapping the DTO to an entity and persisting it. */
     public PersonDTO addPerson(PersonDTO personDTO) {
         PersonEntity entity = personMapper.toEntity(personDTO);
         entity = personRepository.save(entity);
@@ -42,6 +44,7 @@ public class PersonServiceImpl implements PersonService {
         }
     }
 
+    /** Returns all non-hidden persons mapped to DTOs. */
     @Override
     public List<PersonDTO> getAll() {
         return personRepository.findByHidden(false)
@@ -64,23 +67,29 @@ public class PersonServiceImpl implements PersonService {
                 .orElseThrow(() -> new NotFoundException("Person with id " + id + " wasn't found in the database."));
     }
     // endregion
+    /** Returns the detail of a single person. Throws if the person does not exist. */
     @Override
     public PersonDTO getPersonDetail (Long personId) {
         PersonEntity person = personRepository.getReferenceById(personId);
         return personMapper.toDTO(person);
      }
 
+    /**
+     * Updates an existing person.
+     * The ID is explicitly set on the mapped entity to prevent creating a new record.
+     */
      @Override
     public PersonDTO editPerson(Long personId, PersonDTO personDTO) {
         if (!personRepository.existsById(personId)) {
             throw new EntityNotFoundException("Person with id " + personId + "wasn't found in the database! ");
         }
         PersonEntity entity = personMapper.toEntity(personDTO);
-        entity.setId(personId);
+        entity.setId(personId); // Ensure we update the existing record, not create a new one
         PersonEntity saved = personRepository.save(entity);
         return personMapper.toDTO(saved);
      }
 
+    /** Delegates to the repository to retrieve revenue statistics for all persons. */
     @Override
     public List<PersonStatisticsDTO> getPersonStatistics() {
         return personRepository.getPersonStatistics();

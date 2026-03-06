@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * REST controller for invoice management.
+ * Handles CRUD operations and provides lookup endpoints by seller/buyer identification number.
+ */
 @RestController
 @RequestMapping("/api")
 public class InvoiceController {
@@ -20,44 +24,95 @@ public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
 
+    /**
+     * Creates a new invoice.
+     *
+     * @param invoiceDTO invoice data from the request body
+     * @return created invoice with HTTP 201 Created status
+     */
     @PostMapping("/invoices")
-    public ResponseEntity<InvoiceDTO> addInvoice(@RequestBody InvoiceDTO invoiceDTO){ // ResponseEntity for "created" code 201.
+    public ResponseEntity<InvoiceDTO> addInvoice(@RequestBody InvoiceDTO invoiceDTO){
         InvoiceDTO created = invoiceService.addInvoice(invoiceDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
-
+        return ResponseEntity.status(HttpStatus.CREATED).body(created); // Return 201 Created instead of default 200
     }
+
+    /**
+     * Returns a filtered list of all invoices.
+     * Supports optional filters: buyerID, sellerID, product, minPrice, maxPrice, limit.
+     *
+     * @param filter query parameters mapped to {@link InvoiceFilter}
+     * @return list of matching invoices
+     */
     @GetMapping("/invoices")
     public List<InvoiceDTO> getAllInvoices(InvoiceFilter filter) {
         return invoiceService.getAllInvoices(filter);
     }
 
+    /**
+     * Returns aggregate invoice statistics (current year sum, all-time sum, total count).
+     *
+     * @return invoice statistics
+     */
     @GetMapping("/invoices/statistics")
     public InvoiceStatisticsDTO getInvoiceStatistics() {
         return invoiceService.getInvoiceStatistics();
     }
+
+    /**
+     * Updates an existing invoice.
+     *
+     * @param invoiceId ID of the invoice to update
+     * @param invoiceDTO new invoice data
+     * @return updated invoice
+     */
     @PutMapping("/invoices/{invoiceId}")
     public InvoiceDTO editInvoice(@PathVariable Long invoiceId, @RequestBody InvoiceDTO invoiceDTO){
         return invoiceService.editInvoice(invoiceId, invoiceDTO);
     }
+
+    /**
+     * Returns the detail of a single invoice.
+     *
+     * @param invoiceId ID of the invoice to fetch
+     * @return invoice detail
+     */
     @GetMapping("/invoices/{invoiceId}")
     public InvoiceDTO getInvoiceDetail(@PathVariable Long invoiceId){
         return invoiceService.getInvoiceDetail(invoiceId);
     }
+
+    /**
+     * Deletes an invoice by ID.
+     *
+     * @param invoiceId ID of the invoice to delete
+     * @return HTTP 204 No Content
+     */
     @DeleteMapping("/invoices/{invoiceId}")
     public ResponseEntity<Void> deleteInvoice(@PathVariable Long invoiceId) {
         invoiceService.deleteInvoice(invoiceId);
         return ResponseEntity.noContent().build();
     }
+
+    /**
+     * Returns all invoices where the seller matches the given identification number.
+     *
+     * @param identificationNumber seller's business identification number
+     * @return list of invoices issued by the seller
+     */
     @GetMapping("/identification/{identificationNumber}/sales")
     public List<InvoiceDTO> getInvoicesBySeller(@PathVariable String identificationNumber) {
         return invoiceService.getInvoicesBySeller(identificationNumber);
-
     }
 
+    /**
+     * Returns all invoices where the buyer matches the given identification number.
+     *
+     * @param identificationNumber buyer's business identification number
+     * @return list of invoices received by the buyer
+     */
     @GetMapping("/identification/{identificationNumber}/purchases")
     public List<InvoiceDTO> getInvoicesByBuyer(@PathVariable String identificationNumber) {
         return invoiceService.getInvoicesByBuyer(identificationNumber);
-
     }
 
 

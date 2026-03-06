@@ -29,6 +29,9 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * JPA entity representing a person (business entity) stored in the "person" table.
+ */
 @Entity(name = "person")
 @Getter
 @Setter
@@ -75,6 +78,10 @@ public class PersonEntity {
 
     private String note;
 
+    /**
+     * Soft-delete flag. Hidden persons are kept in the database
+     * but excluded from normal listings.
+     */
     private boolean hidden = false;
 
 }

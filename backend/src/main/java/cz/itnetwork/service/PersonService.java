@@ -30,10 +30,28 @@ public interface PersonService {
      */
     List<PersonDTO> getAll();
 
+    /**
+     * Returns the detail of a single person.
+     *
+     * @param personId ID of the person to fetch
+     * @return person detail
+     */
     PersonDTO getPersonDetail(Long personId);
 
+    /**
+     * Updates an existing person.
+     *
+     * @param personId  ID of the person to update
+     * @param personDTO new person data
+     * @return updated person
+     */
     PersonDTO editPerson(Long personId, PersonDTO personDTO);
 
+    /**
+     * Returns revenue statistics for each person (total revenue as seller).
+     *
+     * @return list of person statistics
+     */
     List<PersonStatisticsDTO> getPersonStatistics();
 
 }

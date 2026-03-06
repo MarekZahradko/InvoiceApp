@@ -12,12 +12,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Spring Security {@link UserDetailsService} implementation.
+ * Loads user data from the database for authentication purposes.
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
 
+    /**
+     * Loads a {@link UserDetails} object by the user's email address.
+     * The granted authority is derived from the user's {@link cz.itnetwork.constant.Role},
+     * prefixed with "ROLE_" as required by Spring Security.
+     *
+     * @param email the email used as the username
+     * @return populated {@link UserDetails}
+     * @throws UsernameNotFoundException if no user with the given email exists
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity user = userRepository.findByEmail(email)
