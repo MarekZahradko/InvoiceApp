@@ -23,7 +23,7 @@
 import React, {useEffect, useState} from "react";
 import {useParams, Link} from "react-router-dom";
 
-import {apiGet} from "../utils/api";
+import {apiGet, apiGetPdf} from "../utils/api";
 import {dateStringFormatter} from "../utils/dateStringFormatter";
 
 // invoice detail with VAT price calculation
@@ -32,6 +32,18 @@ const InvoiceDetail = () => {
     const {id} = useParams();
     // invoice data
     const [invoice, setInvoice] = useState({});
+
+    // fetch PDF blob from API and open it in a new browser tab
+    const createPdf = async () => {
+        try {
+            const pdfData = await apiGetPdf("/api/invoices/" + id + "/pdf");
+            const url = URL.createObjectURL(pdfData);
+            window.open(url, "_blank");
+        } catch (error) {
+            console.log(error.message);
+            alert(error.message);
+        }
+    };
 
     // load invoice from API
     useEffect(() => {
@@ -104,8 +116,14 @@ const InvoiceDetail = () => {
                 <br/>
                 {invoice.note}
             </p>
+            {/* button to generate and open PDF in a new tab */}
+            <button onClick={createPdf} className="btn btn-primary">
+                Zobrazit PDF
+            </button>
         </div>
     );
 };
+
+
 // export InvoiceDetail component
 export default InvoiceDetail;

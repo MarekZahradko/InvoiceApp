@@ -1,7 +1,7 @@
 # Invoice Manager — Frontend
 
 React SPA for managing invoices and persons (clients/vendors).
-Communicates with the [Spring Boot backend](../backend) via REST API.
+Communicates with the [Spring Boot backend](../invoice-server-starter/backend) via REST API.
 
 ## Prerequisites
 
@@ -41,12 +41,22 @@ Change this value if your backend runs on a different address.
 | `/invoices` | List of invoices with filters | USER, ADMIN |
 | `/invoices/create` | Create new invoice | ADMIN |
 | `/invoices/edit/:id` | Edit invoice | ADMIN |
-| `/invoices/show/:id` | Invoice detail | USER, ADMIN |
+| `/invoices/show/:id` | Invoice detail with PDF export | USER, ADMIN |
 
 All routes except `/login` and `/register` require authentication.
 Unauthenticated users are redirected to `/login`.
 
-For details on roles and authentication, see [API Documentation](../backend/docs/API.md).
+## Export Features
+
+### PDF Export
+
+Available on the invoice detail page (`/invoices/show/:id`).
+Clicking **"Zobrazit PDF"** fetches the invoice as a PDF from the backend and opens it in a new browser tab.
+
+### Excel Export
+
+Available on the dashboard (`/dashboard`) in the person statistics section.
+Clicking **"Export to Excel"** downloads a `.xlsx` file with identification number, name, and revenue for each person.
 
 ## Project Structure
 
@@ -56,7 +66,7 @@ src/
 ├── persons/         # Person pages and components
 ├── components/      # Shared reusable components (inputs, flash messages)
 ├── utils/
-│   ├── api.js               # HTTP helper functions (GET, POST, PUT, DELETE)
+│   ├── api.js               # HTTP helpers (GET, POST, PUT, DELETE, PDF, Excel)
 │   ├── AuthContext.jsx      # Global authentication state (JWT + user)
 │   ├── ProtectedRoute.jsx   # Route guard for authenticated pages
 │   └── dateStringFormatter.js
