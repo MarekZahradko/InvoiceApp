@@ -114,3 +114,54 @@ export const apiDelete = (url) => {
 
     return fetchData(url, requestOptions);
 };
+
+// GET request for Excel — returns response as a binary blob
+export const apiGetExcel = (url) => {
+    const apiUrl = `${API_URL}${url}`;
+    // set options for GET
+    const requestOptions = {
+        method: "GET",
+        headers: getHeaders()
+    };
+
+    return fetch(apiUrl, requestOptions)
+        .then((response) => {
+            // check request success
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+            return response.blob();
+        })
+        .catch((error) => {
+            // propagate error
+            throw error;
+        });
+};
+
+// GET request for PDF
+export const apiGetPdf = (url) => {
+    const apiUrl = `${API_URL}${url}`;
+    // set options for GET
+    const requestOptions = {
+        
+        method: "GET",
+        headers: getHeaders()
+    };
+
+
+    return fetch(apiUrl, requestOptions)
+        .then((response) => {
+            // check request success
+            if (!response.ok) {
+                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            }
+
+            
+            
+                return response.blob();
+        })
+        .catch((error) => {
+            // propagate error
+            throw error;
+        });
+}

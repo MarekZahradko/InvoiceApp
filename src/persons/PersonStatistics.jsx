@@ -21,8 +21,9 @@
  */
 
 import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 
-import {apiGet} from "../utils/api";
+import {apiGet, apiGetExcel} from "../utils/api";
 
 // statistics - sales for individual persons
 const PersonStatistics = () => {
@@ -34,11 +35,26 @@ const PersonStatistics = () => {
         apiGet("/api/persons/statistics").then((data) => setStats(data));
     }, []);
 
+    // download statistics as Excel file
+    const handleExcelExport = () => {
+        apiGetExcel("/api/statistics/export/excel").then((blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "statistiky.xlsx";
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
+    };
+
     // render statistics in table
     return (
         <div className="card mt-4">
-            <div className="card-header">
-                <h5>Tržby jednotlivých osob</h5>
+            <div className="card-header d-flex justify-content-between align-items-center">
+                <h5 className="mb-0">Tržby jednotlivých osob</h5>
+                <button className="btn btn-success btn-sm" onClick={handleExcelExport}>
+                    Export do Excelu
+                </button>
             </div>
             <div className="card-body">
                 {/* display table if data exists */}
@@ -46,7 +62,7 @@ const PersonStatistics = () => {
                     <table className="table table-bordered">
                         <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>IČO</th>
                             <th>Osoba</th>
                             <th className="text-end">Tržby (Kč)</th>
                         </tr>
@@ -54,9 +70,9 @@ const PersonStatistics = () => {
                         <tbody>
                         {/* render rows for each person */}
                         {stats.map((stat) => (
-                            <tr key={stat.personId}>
-                                <td>{stat.personId}</td>
-                                <td>{stat.personName}</td>
+                            <tr key={stat.identificationNumber}>
+                                <td>{stat.identificationNumber}</td>
+                                <td><Link to={`/persons/show/${stat.personId}`}>{stat.personName}</Link></td>
                                 <td className="text-end">{stat.revenue ? stat.revenue.toLocaleString('cs-CZ') : 0}</td>
                             </tr>
                         ))}

@@ -121,7 +121,8 @@ const InvoiceIndex = () => {
                             handleChange={handleFilter}
                         />
                     </div>
-                    <div className="col-md-3" style={{paddingTop: "32px"}}>
+                    <div className="col-md-3">
+                        <label className="d-block">&nbsp;</label>
                         <button type="submit" className="btn btn-primary">Filtrovat</button>
                         <button type="button" className="btn btn-secondary ms-2" onClick={() => {
                             setFilter({product: "", minPrice: "", maxPrice: "", limit: ""});

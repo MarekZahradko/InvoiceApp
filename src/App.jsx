@@ -52,24 +52,24 @@ export function App() {
       <Router>
         <div className="container">
           {/* navigation bar */}
-          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <nav className="navbar navbar-expand-lg navbar-light bg-light rounded 6">
             <ul className="navbar-nav mr-auto">
               {/* link to dashboard */}
               <li className="nav-item">
                 <Link to={"/dashboard"} className="nav-link">
-                  Statistics
+                  Statistiky
                 </Link>
               </li>
               {/* link to persons list */}
               <li className="nav-item">
                 <Link to={"/persons"} className="nav-link">
-                  Persons
+                  Osoby
                 </Link>
               </li>
               {/* link to invoices list */}
               <li className="nav-item">
                 <Link to={"/invoices"} className="nav-link">
-                  Invoices
+                  Faktury
                 </Link>
               </li>
             </ul>
@@ -187,17 +187,17 @@ function AuthLogout() {
           <span className="me-3 text-muted">{user.email}</span>
           {/* logout button */}
           <button
-            className="btn btn-sm btn-outline-danger"
+            className="btn btn-sm btn-outline-danger me-2"
             onClick={() => {
               logout();
               window.location.href = "/login";
             }}
           >
-            Logout
+            Odhlásit
           </button>
         </>
       ) : (
-        <span className="me-3 text-muted">Logged in</span>
+        <span className="me-3 text-muted">Přihlášen</span>
       )}
     </div>
   );

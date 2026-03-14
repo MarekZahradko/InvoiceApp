@@ -49,7 +49,7 @@ const PersonIndex = () => {
         apiGet("/api/persons").then((data) => setPersons(data));
     }, []);
 
-    // render list with statistics
+    // render list of persons
     return (
         <div>
             <h1>Seznam osob</h1>
@@ -58,7 +58,7 @@ const PersonIndex = () => {
                 items={persons}
                 label="Počet osob:"
             />
-            <PersonStatistics />
+           
         </div>
     );
 };

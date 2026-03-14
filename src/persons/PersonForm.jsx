@@ -284,7 +284,7 @@ const PersonForm = () => {
                 />
 
                 <input type="submit" className="btn btn-primary" value="Uložit"/>
-                // export PersonForm component
+              
             </form>
         </div>
     );
