@@ -64,6 +64,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.DELETE, "/api/invoices/**").hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.GET, "/api/identification/**").hasAnyRole("ADMIN", "USER")
+                        // Statistics export: accessible to all authenticated users
+                        .requestMatchers(HttpMethod.GET, "/api/statistics/**").hasAnyRole("ADMIN", "USER")
 
                         .anyRequest().authenticated()
                 )

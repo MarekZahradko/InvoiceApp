@@ -4,9 +4,15 @@ package cz.itnetwork.controller;
 import cz.itnetwork.dto.InvoiceDTO;
 import cz.itnetwork.dto.InvoiceStatisticsDTO;
 import cz.itnetwork.entity.filter.InvoiceFilter;
+import cz.itnetwork.service.ExcelService;
 import cz.itnetwork.service.InvoiceService;
+import cz.itnetwork.service.PersonService;
+import cz.itnetwork.service.PdfService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +29,15 @@ public class InvoiceController {
 
     @Autowired
     private InvoiceService invoiceService;
+
+    @Autowired
+    private PdfService pdfService;
+
+    @Autowired
+    private ExcelService excelService;
+
+    @Autowired
+    private PersonService personService;
 
     /**
      * Creates a new invoice.
@@ -116,8 +131,36 @@ public class InvoiceController {
     }
 
 
+    /**
+     * Generates and returns a PDF document for the given invoice.
+     *
+     * @param id ID of the invoice to render as PDF
+     * @return PDF file displayed inline in the browser
+     */
+    @GetMapping("/invoices/{id}/pdf")
+    public ResponseEntity<byte[]> getInvoicePdf(@PathVariable Long id) throws Exception {
+        InvoiceDTO invoice = invoiceService.getInvoiceDetail(id);
+        byte[] pdf = pdfService.generateInvoicePdf(invoice);
 
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=faktura.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
+    }
 
+    /**
+     * Exports person revenue statistics as a downloadable Excel (.xlsx) file.
+     *
+     * @return Excel file containing identification number, name, and revenue for each person
+     */
+    @GetMapping("/statistics/export/excel")
+    public ResponseEntity<byte[]> exportStatisticsExcel() throws Exception {
+        byte[] excel = excelService.generateStatisticsExcel(personService.getPersonStatistics());
 
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=statistiky.xlsx")
+                .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+                .body(excel);
+    }
 
 }

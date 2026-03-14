@@ -38,6 +38,32 @@ To grant admin access, update the role directly in the database:
 UPDATE user SET role = 'ADMIN' WHERE email = 'your@email.com';
 ```
 
+## Export Features
+
+### PDF Export
+
+Each invoice can be exported as a PDF document:
+
+```
+GET /api/invoices/{id}/pdf
+```
+
+Returns the invoice rendered as a PDF file (inline, opens in browser).
+Generated from a Thymeleaf HTML template using the openhtmltopdf library.
+
+### Excel Export
+
+Person revenue statistics can be exported as an Excel file:
+
+```
+GET /api/statistics/export/excel
+```
+
+Returns a `.xlsx` file containing identification number, name, and total revenue for each person.
+Generated using Apache POI.
+
+Both endpoints require authentication (USER or ADMIN role).
+
 ## Documentation
 
 - [API Reference](docs/API.md)

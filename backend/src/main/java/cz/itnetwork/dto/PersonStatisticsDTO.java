@@ -18,6 +18,9 @@ public class PersonStatisticsDTO {
     @JsonProperty("personId")
     private Long personId;
 
+    @JsonProperty("identificationNumber")
+    private String identificationNumber;
+
     @JsonProperty("personName")
     private String personName;
 

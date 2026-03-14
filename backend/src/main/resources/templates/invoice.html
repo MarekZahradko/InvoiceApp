@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 13px;
+            color: #222;
+            margin: 30px;
+        }
+
+        /* HEADER */
+        .header-table {
+            width: 100%;
+            border-bottom: 2px solid #333;
+            margin-bottom: 20px;
+        }
+        .header-table td {
+            padding: 6px 0;
+        }
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .invoice-number {
+            font-size: 14px;
+            text-align: right;
+        }
+
+        /* SELLER / BUYER */
+        .parties-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .parties-table td {
+            vertical-align: top;
+            width: 50%;
+            padding-right: 20px;
+        }
+        .party-label {
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #555;
+            margin-bottom: 4px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 3px;
+        }
+        .highlight {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .party-info p {
+            margin: 2px 0;
+        }
+
+        /* PAYMENT DETAILS */
+        .payment-section {
+            margin-bottom: 20px;
+        }
+        .payment-section h3 {
+            font-size: 13px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 4px;
+            margin-bottom: 8px;
+        }
+        .payment-table {
+            border-collapse: collapse;
+        }
+        .payment-table td {
+            padding: 3px 16px 3px 0;
+        }
+        .payment-table td:first-child {
+            color: #555;
+        }
+
+        /* ITEMS TABLE */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .items-table th {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 6px 8px;
+            text-align: left;
+        }
+        .items-table td {
+            border: 1px solid #ccc;
+            padding: 6px 8px;
+        }
+        .items-table th.center, .items-table td.center { text-align: center; }
+        .items-table th.right,  .items-table td.right  { text-align: right; }
+
+        /* VAT SUMMARY */
+        .summary-table {
+            width: 50%;
+            margin-left: auto;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+        .summary-table th {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 8px;
+            text-align: right;
+        }
+        .summary-table td {
+            border: 1px solid #ccc;
+            padding: 5px 8px;
+            text-align: right;
+        }
+
+        /* TOTAL */
+        .total-box {
+            text-align: right;
+            font-size: 16px;
+            font-weight: bold;
+            border-top: 2px solid #333;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+
+        /* NOTE */
+        .note {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #555;
+            border-top: 1px solid #eee;
+            padding-top: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<table class="header-table">
+    <tr>
+        <td class="title">Faktura – daňový doklad</td>
+        <td class="invoice-number">Ev. číslo: <span th:text="${invoice.invoiceNumber}"></span></td>
+    </tr>
+</table>
+
+<!-- SELLER + BUYER -->
+<table class="parties-table">
+    <tr>
+        <td>
+            <div class="party-label">Dodavatel:</div>
+            <div class="party-info">
+                <p class="highlight" th:text="${invoice.seller.name}"></p>
+                <p th:text="${invoice.seller.street}"></p>
+                <p th:text="${invoice.seller.zip + ' ' + invoice.seller.city}"></p>
+                <p>IČ: <span th:text="${invoice.seller.identificationNumber}"></span></p>
+                <p th:if="${invoice.seller.taxNumber != null and !invoice.seller.taxNumber.isEmpty()}">
+                    DIČ: <span th:text="${invoice.seller.taxNumber}"></span>
+                </p>
+                <p>Bankovní spojení: <span th:text="${invoice.seller.accountNumber + '/' + invoice.seller.bankCode}"></span></p>
+                <p>Email: <span th:text="${invoice.seller.mail}"></span></p>
+                <p>Telefon: <span th:text="${invoice.seller.telephone}"></span></p>
+            </div>
+        </td>
+        <td>
+            <div class="party-label">Odběratel:</div>
+            <div class="party-info">
+                <p class="highlight" th:text="${invoice.buyer.name}"></p>
+                <p th:text="${invoice.buyer.street}"></p>
+                <p th:text="${invoice.buyer.zip + ' ' + invoice.buyer.city}"></p>
+                <p>IČ: <span th:text="${invoice.buyer.identificationNumber}"></span></p>
+                <p th:if="${invoice.buyer.taxNumber != null and !invoice.buyer.taxNumber.isEmpty()}">
+                    DIČ: <span th:text="${invoice.buyer.taxNumber}"></span>
+                </p>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<!-- DATES AND PAYMENT DETAILS -->
+<div class="payment-section">
+    <h3>Datumy a platební údaje:</h3>
+    <table class="payment-table">
+        <tr>
+            <td>Datum vystavení:</td>
+            <td th:text="${#temporals.format(invoice.issued, 'dd.MM.yyyy')}"></td>
+        </tr>
+        <tr>
+            <td>Datum splatnosti:</td>
+            <td th:text="${#temporals.format(invoice.dueDate, 'dd.MM.yyyy')}"></td>
+        </tr>
+    </table>
+</div>
+
+<!-- ITEMS TABLE -->
+<table class="items-table">
+    <thead>
+        <tr>
+            <th>Položka</th>
+            <th class="center">% DPH</th>
+            <th class="right">Cena celkem</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td th:text="${invoice.product}"></td>
+            <td class="center" th:text="${invoice.vat + ' %'}"></td>
+            <td class="right" th:text="${#numbers.formatDecimal(invoice.price, 1, 2) + ' CZK'}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- VAT SUMMARY -->
+<table class="summary-table">
+    <thead>
+        <tr>
+            <th>% DPH</th>
+            <th>Základ</th>
+            <th>Daň</th>
+            <th>Celkem</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td th:text="${invoice.vat + ' %'}"></td>
+            <td th:text="${#numbers.formatDecimal(invoice.price * 100 / (100 + invoice.vat), 1, 2) + ' CZK'}"></td>
+            <td th:text="${#numbers.formatDecimal(invoice.price - invoice.price * 100 / (100 + invoice.vat), 1, 2) + ' CZK'}"></td>
+            <td th:text="${#numbers.formatDecimal(invoice.price, 1, 2) + ' CZK'}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- TOTAL AMOUNT -->
+<div class="total-box">
+    Celkem k úhradě: <span th:text="${#numbers.formatDecimal(invoice.price, 1, 2) + ' CZK'}"></span>
+</div>
+
+<!-- NOTE -->
+<div class="note" th:if="${invoice.note != null and !invoice.note.isEmpty()}">
+    Poznámka: <span th:text="${invoice.note}"></span>
+</div>
+
+</body>
+</html>
