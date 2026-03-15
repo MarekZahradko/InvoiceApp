@@ -48,8 +48,12 @@ const fetchData = (url, requestOptions) => {
     return fetch(apiUrl, requestOptions)
         .then((response) => {
             // check request success
-            if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.status} ${response.statusText}`);
+            if (response.status === 401 || response.status === 403) {
+                // unauthorized or forbidden - clear token and redirect to login
+                localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+                window.location.href = '/login';
+                return;
             }
 
             // parse JSON response (except DELETE)

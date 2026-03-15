@@ -47,6 +47,7 @@ export function InputField(props) {
           name={props.name}
           value={props.value}
           onChange={props.handleChange}
+          onBlur={props.onBlur}
         />
       )}
     </div>

@@ -73,6 +73,8 @@ export function App() {
                 </Link>
               </li>
             </ul>
+            {/* application name centered */}
+            <span className="navbar-brand mx-auto fw-bold">Invoice Application</span>
             {/* logout button */}
             <AuthLogout />
           </nav>
@@ -196,9 +198,7 @@ function AuthLogout() {
             Odhlásit
           </button>
         </>
-      ) : (
-        <span className="me-3 text-muted">Přihlášen</span>
-      )}
+      ) : null}
     </div>
   );
 }

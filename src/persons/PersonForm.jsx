@@ -67,6 +67,33 @@ const PersonForm = () => {
         }
     }, [id]);
 
+    // Triggered when the user leaves the IČO field (onBlur event).
+    // If the IČO is exactly 8 digits, calls the ARES API to fetch company data
+    // and pre-fills the form fields with the returned values.
+    // Already filled fields are kept if ARES returns nothing for that field.
+    const handleIcoBlur = () => {
+        const ico = person.identificationNumber;
+        // ARES requires exactly 8 digits – skip the lookup if the input is incomplete
+        if (!ico || ico.length !== 8) return;
+
+        apiGet("/api/ares/" + ico).then((data) => {
+            if (data) {
+                // merge ARES data into the current person state,
+                // keeping existing values as fallback if ARES field is empty
+                setPerson((prev) => ({
+                    ...prev,
+                    name: data.name || prev.name,
+                    taxNumber: data.taxNumber || prev.taxNumber,
+                    street: data.street || prev.street,
+                    zip: data.zip || prev.zip,
+                    city: data.city || prev.city,
+                }));
+            }
+        }).catch(() => {
+            // IČO not found in ARES – silently ignore, user can fill in manually
+        });
+    };
+
     // handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -129,6 +156,7 @@ const PersonForm = () => {
                     handleChange={(e) => {
                         setPerson({...person, identificationNumber: e.target.value});
                     }}
+                    onBlur={handleIcoBlur} // trigger ARES lookup when user leaves the field
                 />
 
                 <InputField
