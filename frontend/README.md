@@ -46,6 +46,18 @@ Change this value if your backend runs on a different address.
 All routes except `/login` and `/register` require authentication.
 Unauthenticated users are redirected to `/login`.
 
+## ARES Auto-fill
+
+When creating or editing a person, entering an 8-digit IČO and leaving the field
+automatically fetches company data from the [ARES](https://ares.gov.cz) Czech business registry.
+
+The following fields are pre-filled if the IČO is found:
+- Company name
+- DIČ (tax number)
+- Street, ZIP code, city
+
+If the IČO is not found in ARES, the fields remain empty and can be filled in manually.
+
 ## Export Features
 
 ### PDF Export

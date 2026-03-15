@@ -64,6 +64,36 @@ Generated using Apache POI.
 
 Both endpoints require authentication (USER or ADMIN role).
 
+## ARES Integration
+
+The backend integrates with the [ARES](https://ares.gov.cz) Czech business registry.
+Given a valid IČO (8-digit company ID), the API fetches and returns pre-filled company data.
+
+```
+GET /api/ares/{ico}
+```
+
+**Example:**
+```
+GET /api/ares/27082440
+```
+
+Returns a `PersonDTO` with `name`, `identificationNumber`, `taxNumber`, `street`, `zip`, and `city` pre-filled from ARES.
+This endpoint is **public** (no authentication required) so it can be called from the person creation form.
+
+Returns `404` if the IČO does not exist in the ARES registry.
+
+## Health & Monitoring
+
+The app exposes two public [Spring Actuator](https://docs.spring.io/spring-boot/docs/current/reference/html/actuator.html) endpoints for basic health checking:
+
+| Endpoint | Description |
+|----------|-------------|
+| `GET /actuator/health` | Server and database status |
+| `GET /actuator/info` | Application info |
+
+Useful for verifying the server is running and the database connection is healthy.
+
 ## Documentation
 
 - [API Reference](docs/API.md)

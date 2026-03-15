@@ -24,3 +24,12 @@ spring:
 jwt:
   secret: dGhpcyBpcyBhIHNlY3VyZSBiYXNlNjQga2V5IGZvciBqd3QgdG9rZW4gc2lnbmluZw==
   expiration: 86400000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,mappings
+  endpoint:
+    health:
+      show-details: always

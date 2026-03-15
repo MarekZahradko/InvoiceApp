@@ -50,6 +50,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Allow preflight requests
                         .requestMatchers("/api/auth/**").permitAll()            // Public auth endpoints
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/info", "/actuator/mappings").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/ares/**").permitAll()
 
                         // Persons: read for all authenticated users, write only for ADMIN
                         .requestMatchers(HttpMethod.GET, "/api/persons/**").hasAnyRole("ADMIN", "USER")
