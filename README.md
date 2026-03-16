@@ -1,4 +1,4 @@
-# Invoice Manager
+# Invoice Managment System
 
 Full-stack web application for managing invoices and persons (clients/vendors).
 Built with Spring Boot (backend) and React (frontend).
