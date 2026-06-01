@@ -46,6 +46,19 @@ cz.itnetwork/
 
 ---
 
+## Roles & Permissions
+
+| Action | Unauthenticated | USER | ADMIN |
+|--------|----------------|------|-------|
+| Login / Register | ✅ | ✅ | ✅ |
+| ARES lookup | ✅ | ✅ | ✅ |
+| View invoices & persons | ❌ | ✅ | ✅ |
+| View statistics | ❌ | ✅ | ✅ |
+| Export PDF / Excel | ❌ | ✅ | ✅ |
+| Create / Edit / Delete | ❌ | ❌ | ✅ |
+
+All registered users start with the **USER** role. Admin access must be granted manually in the database — see [First-Time Setup](#first-time-setup--admin-role).
+
 ## Prerequisites
 
 - Java 17+

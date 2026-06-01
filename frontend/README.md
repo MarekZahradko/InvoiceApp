@@ -44,8 +44,9 @@ Change this value if your backend runs on a different address.
 | `/invoices/edit/:id` | Edit invoice | ADMIN |
 | `/invoices/show/:id` | Invoice detail with PDF export | USER, ADMIN |
 
-All routes except `/login` and `/register` require authentication.
-Unauthenticated users are redirected to `/login`.
+Unauthenticated users can only access `/login` and `/register` — all other routes redirect to `/login`.
+
+All registered users start with the **USER** role (read-only). Admin access must be granted manually in the database.
 
 ## ARES Auto-fill
 
