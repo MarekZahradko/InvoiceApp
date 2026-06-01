@@ -1,13 +1,26 @@
 import React from "react";
 
-export function InputSelect(props) {
+interface InputSelectProps {
+  label: string;
+  prompt: string;
+  name: string;
+  value: string | string[];
+  multiple?: boolean;
+  required?: boolean;
+  items: { _id?: number, name?: string }[] | string[];
+  enum?: Record<string, string>;
+  handleChange: React.ChangeEventHandler<HTMLSelectElement>;
+}
+
+
+export function InputSelect(props: InputSelectProps) {
   // flag for multiple select
   const multiple = props.multiple;
   // flag for required field
   const required = props.required || false;
 
   // flag to mark empty value
-  const emptySelected = multiple ? props.value?.length === 0 : !props.value;
+const emptySelected = "";
   // flag for object structure of items
   const objectItems = props.enum ? false : true;
 
@@ -37,15 +50,15 @@ export function InputSelect(props) {
 
         {objectItems
           ? /* render items as objects from database (persons) */
-            props.items.map((item, index) => (
-              <option key={required ? index : index + 1} value={item._id}>
+(props.items as { _id?: number; name?: string }[]).map((item, index) => (
+              <option key={required ? index : index + 1} value={(item as { _id?: number; name?: string })._id}>
                 {item.name}
               </option>
             ))
           : /* render items as values from enum (genres) */
             props.items.map((item, index) => (
-              <option key={required ? index : index + 1} value={item}>
-                {props.enum[item]}
+              <option key={required ? index : index + 1} value={item as string}>
+                {props.enum![item as string]}
               </option>
             ))}
       </select>

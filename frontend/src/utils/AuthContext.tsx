@@ -21,18 +21,28 @@
  */
 
 import React, {createContext, useState, useEffect} from "react";
+import {User} from "../types";
+
+interface AuthContextType {
+    isAuthenticated: boolean;
+    loading: boolean;
+    user: User | null;
+    login: (token: string, userData: User) => void;
+    logout: () => void;
+}
 
 // create context for authentication
-export const AuthContext = createContext();
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
 
 // provider for authentication context
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({children}: {children: React.ReactNode}) => {
     // authentication state
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     // state for loading data from storage
     const [loading, setLoading] = useState(true);
     // state for user data
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<User | null>(null);
 
     // check authentication on component load
     useEffect(() => {
@@ -51,7 +61,7 @@ export const AuthProvider = ({children}) => {
     }, []);
 
     // function to login user
-    const login = (token, userData) => {
+    const login = (token: string, userData: User) => {
         console.log("Login called with:", {token, userData});
         // save token and data to local storage
         localStorage.setItem('authToken', token);

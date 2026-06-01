@@ -20,28 +20,33 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useParams, Link} from "react-router-dom";
 
 import {apiGet} from "../utils/api";
 import {dateStringFormatter} from "../utils/dateStringFormatter";
+import {Person, Invoice} from "../types";
 
 import Country from "./Country";
 
 const PersonDetail = () => {
     const {id} = useParams();
-    const [person, setPerson] = useState({});
-    const [sales, setSales] = useState([]);
-    const [purchases, setPurchases] = useState([]);
+    const [person, setPerson] = useState<Partial<Person>>({});
+    const [sales, setSales] = useState<Invoice[]>([]);
+    const [purchases, setPurchases] = useState<Invoice[]>([]);
 
     useEffect(() => {
-        apiGet("/api/persons/" + id).then((data) => setPerson(data));
+        apiGet("/api/persons/" + id).then((data) => setPerson(data as Person));
     }, [id]);
 
     useEffect(() => {
         if (person.identificationNumber) {
-            apiGet("/api/identification/" + person.identificationNumber + "/sales").then((data) => setSales(data)).catch(() => setSales([]));
-            apiGet("/api/identification/" + person.identificationNumber + "/purchases").then((data) => setPurchases(data)).catch(() => setPurchases([]));
+            apiGet("/api/identification/" + person.identificationNumber + "/sales")
+                .then((data) => setSales(data as Invoice[]))
+                .catch(() => setSales([]));
+            apiGet("/api/identification/" + person.identificationNumber + "/purchases")
+                .then((data) => setPurchases(data as Invoice[]))
+                .catch(() => setPurchases([]));
         }
     }, [person.identificationNumber]);
 
@@ -104,12 +109,12 @@ const PersonDetail = () => {
                                     </Link>
                                 </td>
                                 <td>
-                                    {invoice.buyer?._id ? (
-                                        <Link to={"/persons/show/" + invoice.buyer._id} className="text-decoration-none">
-                                            {invoice.buyer.name}
+                                    {(invoice.buyer as Person)?._id ? (
+                                        <Link to={"/persons/show/" + (invoice.buyer as Person)._id} className="text-decoration-none">
+                                            {(invoice.buyer as Person).name}
                                         </Link>
                                     ) : (
-                                        invoice.buyer?.name
+                                        (invoice.buyer as Person)?.name
                                     )}
                                 </td>
                                 <td>{invoice.price} Kč</td>
@@ -142,12 +147,12 @@ const PersonDetail = () => {
                                     </Link>
                                 </td>
                                 <td>
-                                    {invoice.seller?._id ? (
-                                        <Link to={"/persons/show/" + invoice.seller._id} className="text-decoration-none">
-                                            {invoice.seller.name}
+                                    {(invoice.seller as Person)?._id ? (
+                                        <Link to={"/persons/show/" + (invoice.seller as Person)._id} className="text-decoration-none">
+                                            {(invoice.seller as Person).name}
                                         </Link>
                                     ) : (
-                                        invoice.seller?.name
+                                        (invoice.seller as Person)?.name
                                     )}
                                 </td>
                                 <td>{invoice.price} Kč</td>

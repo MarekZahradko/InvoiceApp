@@ -1,7 +1,5 @@
-import React from "react";
-
 // component for displaying messages
-export function FlashMessage({ theme, text }) {
+export function FlashMessage({ theme, text }: { theme: string; text: string }) {
   // render alert with chosen theme and text
   return <div className={"alert alert-" + theme}>{text}</div>;
 }

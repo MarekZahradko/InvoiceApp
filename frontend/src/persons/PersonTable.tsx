@@ -20,11 +20,17 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React from "react";
 import {Link} from "react-router-dom";
+import {Person} from "../types";
+
+interface PersonTableProps {
+    label: string;
+    items: Person[];
+    deletePerson: (id?: number) => void;
+}
 
 // table with person list
-const PersonTable = ({label, items, deletePerson}) => {
+const PersonTable = ({label, items, deletePerson}: PersonTableProps) => {
     // render table
     return (
         <div>

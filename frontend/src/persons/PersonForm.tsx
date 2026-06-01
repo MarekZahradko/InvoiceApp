@@ -24,6 +24,7 @@ import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 
 import {apiGet, apiPost, apiPut} from "../utils/api";
+import {Person} from "../types";
 
 import InputField from "../components/InputField";
 import InputCheck from "../components/InputCheck";
@@ -38,7 +39,7 @@ const PersonForm = () => {
     // person ID from URL parameters
     const {id} = useParams();
     // person data
-    const [person, setPerson] = useState({
+    const [person, setPerson] = useState<Omit<Person, "_id">>({
         name: "",
         identificationNumber: "",
         taxNumber: "",
@@ -58,27 +59,27 @@ const PersonForm = () => {
     // state of submission success
     const [successState, setSuccess] = useState(false);
     // error message
-    const [errorState, setError] = useState(null);
+    const [errorState, setError] = useState<string | null>(null);
 
     // load person from API if editing
     useEffect(() => {
         if (id) {
-            apiGet("/api/persons/" + id).then((data) => setPerson(data));
+            apiGet("/api/persons/" + id).then((data) => setPerson(data as Person));
         }
     }, [id]);
 
     // handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // send to API
         (id ? apiPut("/api/persons/" + id, person) : apiPost("/api/persons", person))
-            .then((data) => {
+            .then(() => {
                 setSent(true);
                 setSuccess(true);
                 navigate("/persons");
             })
-            .catch((error) => {
+            .catch((error: Error) => {
                 console.log(error.message);
                 setError(error.message);
                 setSent(true);
@@ -109,7 +110,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="personName"
-                    min="3"
+                    min={3}
                     label="Jméno"
                     prompt="Zadejte celé jméno"
                     value={person.name}
@@ -122,7 +123,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="identificationNumber"
-                    min="3"
+                    min={3}
                     label="IČO"
                     prompt="Zadejte IČO"
                     value={person.identificationNumber}
@@ -135,7 +136,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="taxNumber"
-                    min="3"
+                    min={3}
                     label="DIČ"
                     prompt="Zadejte DIČ"
                     value={person.taxNumber}
@@ -148,7 +149,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="accountNumber"
-                    min="3"
+                    min={3}
                     label="Číslo bankovního účtu"
                     prompt="Zadejte číslo bankovního účtu"
                     value={person.accountNumber}
@@ -161,7 +162,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="bankCode"
-                    min="3"
+                    min={3}
                     label="Kód banky"
                     prompt="Zadejte kód banky"
                     value={person.bankCode}
@@ -174,7 +175,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="IBAN"
-                    min="3"
+                    min={3}
                     label="IBAN"
                     prompt="Zadejte IBAN"
                     value={person.iban}
@@ -187,7 +188,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="telephone"
-                    min="3"
+                    min={3}
                     label="Telefon"
                     prompt="Zadejte Telefon"
                     value={person.telephone}
@@ -200,7 +201,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="mail"
-                    min="3"
+                    min={3}
                     label="Mail"
                     prompt="Zadejte mail"
                     value={person.mail}
@@ -213,7 +214,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="street"
-                    min="3"
+                    min={3}
                     label="Ulice"
                     prompt="Zadejte ulici"
                     value={person.street}
@@ -226,7 +227,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="ZIP"
-                    min="3"
+                    min={3}
                     label="PSČ"
                     prompt="Zadejte PSČ"
                     value={person.zip}
@@ -239,7 +240,7 @@ const PersonForm = () => {
                     required={true}
                     type="text"
                     name="city"
-                    min="3"
+                    min={3}
                     label="Město"
                     prompt="Zadejte město"
                     value={person.city}
@@ -253,6 +254,7 @@ const PersonForm = () => {
                     type="text"
                     name="note"
                     label="Poznámka"
+                    prompt=""
                     value={person.note}
                     handleChange={(e) => {
                         setPerson({...person, note: e.target.value});
@@ -284,7 +286,7 @@ const PersonForm = () => {
                 />
 
                 <input type="submit" className="btn btn-primary" value="Uložit"/>
-              
+
             </form>
         </div>
     );

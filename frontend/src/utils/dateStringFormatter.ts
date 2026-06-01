@@ -21,7 +21,7 @@
  */
 
 // function to format date
-export const dateStringFormatter = (str, locale = false) => {
+export const dateStringFormatter = (str: string, locale: boolean = false): string => {
     // create date object from string
     const d = new Date(str);
 

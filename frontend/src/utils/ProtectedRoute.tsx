@@ -2,7 +2,7 @@
  * |_   _|__   __|       | |                    | |
  *   | |    | |_ __   ___| |___      _____  _ __| | __  ___ ____
  *   | |    | | '_ \ / _ \ __\ \ /\ / / _ \| '__| |/ / / __|_  /
- *  _| |_   | | | | |  __/ |_ \ V  V / (_) | |  |   < | (__ / /
+ *  _| |_   | | | | |  __| |_ \ V  V / (_) | |  |   < | (__ / /
  * |_____|  |_|_| |_|\___|\__| \_/\_/ \___/|_|  |_|\_(_)___/___|
  *                                _
  *              ___ ___ ___ _____|_|_ _ _____
@@ -20,25 +20,23 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React from "react";
+import React, {useContext} from "react";
+import {Navigate} from "react-router-dom";
+import {AuthContext} from "./AuthContext";
 
-import InvoiceStatistics from "./invoices/InvoiceStatistics";
-import PersonStatistics from "./persons/PersonStatistics";
+// component to protect routes requiring authentication
+export const ProtectedRoute = ({children}: {children: React.ReactNode}) => {
+    // load authentication state from context
+    const {isAuthenticated, loading} = useContext(AuthContext)!;
 
-// main page - dashboard with statistics
-const Dashboard = () => {
-    // render dashboard with statistics
-    return (
-        <div>
-            <h1>Statistics</h1>
-            <hr/>
-            {/* statistics for invoices */}
-            <InvoiceStatistics />
-            {/* statistics for persons */}
-            <PersonStatistics />
-        </div>
-    );
+    // display loading while checking authentication
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    // redirect to login if not authenticated
+    return isAuthenticated ? children : <Navigate to="/login"/>;
 };
 
-// export Dashboard component
-export default Dashboard;
+// export ProtectedRoute component
+export default ProtectedRoute;

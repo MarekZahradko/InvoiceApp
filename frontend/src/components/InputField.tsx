@@ -1,6 +1,17 @@
 import React from "react";
 
-export function InputField(props) {
+interface InputFieldProps {
+  type: string;
+  label: string;
+  prompt: string;
+  name: string;
+  value: string;
+  required?: boolean;
+  min?: number;
+  rows?: number;
+  handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+}
+export function InputField(props: InputFieldProps) {
   // supported input types for the input element
   const INPUTS = ["text", "number", "date", "email", "password"];
 
@@ -16,8 +27,8 @@ export function InputField(props) {
 
   // assign minimum value to the appropriate attribute type
   const minProp = props.min || null;
-  const min = ["number", "date"].includes(type) ? minProp : null;
-  const minlength = ["text", "textarea"].includes(type) ? minProp : null;
+const min = ["number", "date"].includes(type) ? minProp ?? undefined : undefined;
+const minlength = ["text", "textarea"].includes(type) ? minProp ?? undefined : undefined;
 
   // vykreslení skupiny formuláře s labelem
   return (

@@ -20,18 +20,19 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useParams, Link} from "react-router-dom";
 
 import {apiGet, apiGetPdf} from "../utils/api";
 import {dateStringFormatter} from "../utils/dateStringFormatter";
+import {Invoice, Person} from "../types";
 
 // invoice detail with VAT price calculation
 const InvoiceDetail = () => {
     // invoice ID from URL
     const {id} = useParams();
     // invoice data
-    const [invoice, setInvoice] = useState({});
+    const [invoice, setInvoice] = useState<Partial<Invoice>>({});
 
     // fetch PDF blob from API and open it in a new browser tab
     const createPdf = async () => {
@@ -40,18 +41,20 @@ const InvoiceDetail = () => {
             const url = URL.createObjectURL(pdfData);
             window.open(url, "_blank");
         } catch (error) {
-            console.log(error.message);
-            alert(error.message);
+            console.log((error as Error).message);
+            alert((error as Error).message);
         }
     };
 
     // load invoice from API
     useEffect(() => {
-        apiGet("/api/invoices/" + id).then((data) => setInvoice(data));
+        apiGet("/api/invoices/" + id).then((data) => setInvoice(data as Invoice));
     }, [id]);
 
     // calculate price with VAT
-    const totalPrice = invoice.price ? invoice.price + (invoice.price * invoice.vat) / 100 : 0;
+    const price = Number(invoice.price ?? 0);
+    const vat = Number(invoice.vat ?? 0);
+    const totalPrice = price ? price + (price * vat) / 100 : 0;
 
     // render invoice detail
     return (
@@ -62,23 +65,23 @@ const InvoiceDetail = () => {
             <p>
                 <strong>Prodávající:</strong>
                 <br/>
-                {invoice.seller?._id ? (
-                    <Link to={"/persons/show/" + invoice.seller._id}>
-                        {invoice.seller.name}
+                {(invoice.seller as Person)?._id ? (
+                    <Link to={"/persons/show/" + (invoice.seller as Person)._id}>
+                        {(invoice.seller as Person).name}
                     </Link>
                 ) : (
-                    invoice.seller?.name
+                    (invoice.seller as Person)?.name
                 )}
             </p>
             <p>
                 <strong>Kupující:</strong>
                 <br/>
-                {invoice.buyer?._id ? (
-                    <Link to={"/persons/show/" + invoice.buyer._id}>
-                        {invoice.buyer.name}
+                {(invoice.buyer as Person)?._id ? (
+                    <Link to={"/persons/show/" + (invoice.buyer as Person)._id}>
+                        {(invoice.buyer as Person).name}
                     </Link>
                 ) : (
-                    invoice.buyer?.name
+                    (invoice.buyer as Person)?.name
                 )}
             </p>
             <p>
@@ -104,12 +107,12 @@ const InvoiceDetail = () => {
             <p>
                 <strong>Vystaveno:</strong>
                 <br/>
-                {dateStringFormatter(invoice.issued, true)}
+                {invoice.issued && dateStringFormatter(invoice.issued, true)}
             </p>
             <p>
                 <strong>Splatnost:</strong>
                 <br/>
-                {dateStringFormatter(invoice.dueDate, true)}
+                {invoice.dueDate && dateStringFormatter(invoice.dueDate, true)}
             </p>
             <p>
                 <strong>Poznámka:</strong>

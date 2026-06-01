@@ -20,19 +20,20 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 
 import {apiGet, apiGetExcel} from "../utils/api";
+import {PersonStatisticsData} from "../types";
 
 // statistics - sales for individual persons
 const PersonStatistics = () => {
     // list of statistics
-    const [stats, setStats] = useState([]);
+    const [stats, setStats] = useState<PersonStatisticsData[]>([]);
 
     // load statistics from API
     useEffect(() => {
-        apiGet("/api/persons/statistics").then((data) => setStats(data));
+        apiGet("/api/persons/statistics").then((data) => setStats(data as PersonStatisticsData[]));
     }, []);
 
     // download statistics as Excel file

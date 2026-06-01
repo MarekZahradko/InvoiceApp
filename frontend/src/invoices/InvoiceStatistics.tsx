@@ -20,18 +20,19 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 import {apiGet} from "../utils/api";
+import {InvoiceStatisticsData} from "../types";
 
 // invoice statistics
 const InvoiceStatistics = () => {
     // state with statistics
-    const [stats, setStats] = useState({});
+    const [stats, setStats] = useState<Partial<InvoiceStatisticsData>>({});
 
     // load statistics from API
     useEffect(() => {
-        apiGet("/api/invoices/statistics").then((data) => setStats(data));
+        apiGet("/api/invoices/statistics").then((data) => setStats(data as InvoiceStatisticsData));
     }, []);
 
     // render statistics in cards

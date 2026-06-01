@@ -25,11 +25,11 @@
 const API_URL = "http://localhost:8080";
 
 // function to get headers with authentication token
-const getHeaders = () => {
+const getHeaders = (): Record<string, string> => {
     // load token from local storage
     const token = localStorage.getItem('authToken');
     // basic headers for JSON communication
-    const headers = {
+    const headers: Record<string, string> = {
         "Content-Type": "application/json"
     };
     // add authorization token if it exists
@@ -40,7 +40,7 @@ const getHeaders = () => {
 };
 
 // generic fetch function with error handling
-const fetchData = (url, requestOptions) => {
+const fetchData = (url: string, requestOptions: RequestInit): Promise<unknown> => {
     // complete the URL address
     const apiUrl = `${API_URL}${url}`;
 
@@ -63,10 +63,10 @@ const fetchData = (url, requestOptions) => {
 };
 
 // GET request with filters
-export const apiGet = (url, params) => {
+export const apiGet = (url: string, params?: Record<string, string>): Promise<unknown> => {
     // filter empty parameters
     const filteredParams = Object.fromEntries(
-        Object.entries(params || {}).filter(([_, value]) => value != null)
+        Object.entries(params || {}).filter(([__, value]) => value != null)
     );
 
     // create URL with parameters
@@ -81,7 +81,7 @@ export const apiGet = (url, params) => {
 };
 
 // POST request for creating records
-export const apiPost = (url, data) => {
+export const apiPost = (url: string, data: unknown): Promise<unknown> => {
     // set options for POST
     const requestOptions = {
         method: "POST",
@@ -93,7 +93,7 @@ export const apiPost = (url, data) => {
 };
 
 // PUT request for editing records
-export const apiPut = (url, data) => {
+export const apiPut = (url: string, data: unknown): Promise<unknown> => {
     // set options for PUT
     const requestOptions = {
         method: "PUT",
@@ -105,7 +105,7 @@ export const apiPut = (url, data) => {
 };
 
 // DELETE request for deleting records
-export const apiDelete = (url) => {
+export const apiDelete = (url: string): Promise<unknown> => {
     // set options for DELETE
     const requestOptions = {
         method: "DELETE",
@@ -116,7 +116,7 @@ export const apiDelete = (url) => {
 };
 
 // GET request for Excel — returns response as a binary blob
-export const apiGetExcel = (url) => {
+export const apiGetExcel = (url: string): Promise<Blob> => {
     const apiUrl = `${API_URL}${url}`;
     // set options for GET
     const requestOptions = {
@@ -139,7 +139,7 @@ export const apiGetExcel = (url) => {
 };
 
 // GET request for PDF
-export const apiGetPdf = (url) => {
+export const apiGetPdf = (url: string): Promise<Blob> => {
     const apiUrl = `${API_URL}${url}`;
     // set options for GET
     const requestOptions = {

@@ -20,13 +20,19 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React from "react";
 import {Link} from "react-router-dom";
 
 import {dateStringFormatter} from "../utils/dateStringFormatter";
+import {Invoice, Person} from "../types";
+
+interface InvoiceTableProps {
+    label: string;
+    items: Invoice[];
+    deleteInvoice: (id?: number) => void;
+}
 
 // table with invoice list
-const InvoiceTable = ({label, items, deleteInvoice}) => {
+const InvoiceTable = ({label, items, deleteInvoice}: InvoiceTableProps) => {
     // render table
     return (
         <div>
@@ -55,21 +61,21 @@ const InvoiceTable = ({label, items, deleteInvoice}) => {
                         <td>{index + 1}</td>
                         <td>{item.invoiceNumber}</td>
                         <td>
-                            {item.seller?._id ? (
-                                <Link to={"/persons/show/" + item.seller._id} className="text-decoration-none">
-                                    {item.seller.name}
+                            {(item.seller as Person)?._id ? (
+                                <Link to={"/persons/show/" + (item.seller as Person)._id} className="text-decoration-none">
+                                    {(item.seller as Person).name}
                                 </Link>
                             ) : (
-                                item.seller?.name
+                                (item.seller as Person)?.name
                             )}
                         </td>
                         <td>
-                            {item.buyer?._id ? (
-                                <Link to={"/persons/show/" + item.buyer._id} className="text-decoration-none">
-                                    {item.buyer.name}
+                            {(item.buyer as Person)?._id ? (
+                                <Link to={"/persons/show/" + (item.buyer as Person)._id} className="text-decoration-none">
+                                    {(item.buyer as Person).name}
                                 </Link>
                             ) : (
-                                item.buyer?.name
+                                (item.buyer as Person)?.name
                             )}
                         </td>
                         <td>{item.price} Kč</td>

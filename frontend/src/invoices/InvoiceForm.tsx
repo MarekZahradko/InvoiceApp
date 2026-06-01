@@ -25,10 +25,23 @@ import {useNavigate, useParams} from "react-router-dom";
 
 import {apiGet, apiPost, apiPut} from "../utils/api";
 import {dateStringFormatter} from "../utils/dateStringFormatter";
+import {Invoice, Person} from "../types";
 
 import InputField from "../components/InputField";
 import InputSelect from "../components/InputSelect";
 import FlashMessage from "../components/FlashMessage";
+
+interface InvoiceFormState {
+    invoiceNumber: string;
+    seller: string;
+    buyer: string;
+    issued: string;
+    dueDate: string;
+    product: string;
+    price: string;
+    vat: string;
+    note: string;
+}
 
 // form for creating and editing invoice
 const InvoiceForm = () => {
@@ -37,9 +50,9 @@ const InvoiceForm = () => {
     // invoice ID from URL parameters
     const {id} = useParams();
     // list of persons to select seller and buyer
-    const [persons, setPersons] = useState([]);
+    const [persons, setPersons] = useState<Person[]>([]);
     // invoice data
-    const [invoice, setInvoice] = useState({
+    const [invoice, setInvoice] = useState<InvoiceFormState>({
         invoiceNumber: "",
         seller: "",
         buyer: "",
@@ -55,30 +68,35 @@ const InvoiceForm = () => {
     // state of submission success
     const [successState, setSuccess] = useState(false);
     // error message
-    const [errorState, setError] = useState(null);
+    const [errorState, setError] = useState<string | null>(null);
 
     // load list of persons on initialization
     useEffect(() => {
-        apiGet("/api/persons").then((data) => setPersons(data));
+        apiGet("/api/persons").then((data) => setPersons(data as Person[]));
     }, []);
 
     // load invoice from API if editing
     useEffect(() => {
         if (id) {
             apiGet("/api/invoices/" + id).then((data) => {
+                const d = data as Invoice;
                 setInvoice({
-                    ...data,
-                    issued: dateStringFormatter(data.issued),
-                    dueDate: dateStringFormatter(data.dueDate),
-                    seller: data.seller?._id,
-                    buyer: data.buyer?._id
+                    invoiceNumber: d.invoiceNumber,
+                    product: d.product,
+                    note: d.note,
+                    issued: dateStringFormatter(d.issued),
+                    dueDate: dateStringFormatter(d.dueDate),
+                    seller: String((d.seller as Person)?._id ?? ""),
+                    buyer: String((d.buyer as Person)?._id ?? ""),
+                    price: String(d.price),
+                    vat: String(d.vat),
                 });
             });
         }
     }, [id]);
 
     // handle form submission
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // prepare data for submission - transform objects and numbers
@@ -92,12 +110,12 @@ const InvoiceForm = () => {
 
         // send to API
         (id ? apiPut("/api/invoices/" + id, invoiceData) : apiPost("/api/invoices", invoiceData))
-            .then((data) => {
+            .then(() => {
                 setSent(true);
                 setSuccess(true);
                 navigate("/invoices");
             })
-            .catch((error) => {
+            .catch((error: Error) => {
                 console.log(error.message);
                 setError(error.message);
                 setSent(true);
@@ -201,6 +219,7 @@ const InvoiceForm = () => {
                     type="date"
                     name="issued"
                     label="Vystaveno"
+                    prompt=""
                     value={invoice.issued}
                     handleChange={(e) => {
                         setInvoice({...invoice, issued: e.target.value});
@@ -212,6 +231,7 @@ const InvoiceForm = () => {
                     type="date"
                     name="dueDate"
                     label="Splatnost"
+                    prompt=""
                     value={invoice.dueDate}
                     handleChange={(e) => {
                         setInvoice({...invoice, dueDate: e.target.value});
@@ -222,6 +242,7 @@ const InvoiceForm = () => {
                     type="text"
                     name="note"
                     label="Poznámka"
+                    prompt=""
                     value={invoice.note}
                     handleChange={(e) => {
                         setInvoice({...invoice, note: e.target.value});

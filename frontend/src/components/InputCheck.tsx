@@ -1,11 +1,21 @@
-export function InputCheck(props) {
+interface InputCheckProps {
+  type: string;
+  checked: boolean;
+  name: string;
+  value: string;
+  handleChange: React.ChangeEventHandler<HTMLInputElement>;
+  label: string;
+}
+
+
+export function InputCheck(props: InputCheckProps) {
   // supported input types for the input element
   const INPUTS = ["checkbox", "radio"];
 
   // validate type
   const type = props.type.toLowerCase();
   // checked value
-  const checked = props.checked || "";
+  const checked = props.checked || false;
 
   // check type validity
   if (!INPUTS.includes(type)) {

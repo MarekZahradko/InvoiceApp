@@ -23,16 +23,24 @@
 import React, {useEffect, useState} from "react";
 
 import {apiDelete, apiGet} from "../utils/api";
+import {Invoice} from "../types";
 import InputField from "../components/InputField";
 
 import InvoiceTable from "./InvoiceTable";
 
+interface InvoiceFilter extends Record<string, string> {
+    product: string;
+    minPrice: string;
+    maxPrice: string;
+    limit: string;
+}
+
 // list with filter and display all invoices
 const InvoiceIndex = () => {
     // list of invoices
-    const [invoices, setInvoices] = useState([]);
+    const [invoices, setInvoices] = useState<Invoice[]>([]);
     // filter for search
-    const [filter, setFilter] = useState({
+    const [filter, setFilter] = useState<InvoiceFilter>({
         product: "",
         minPrice: "",
         maxPrice: "",
@@ -40,12 +48,12 @@ const InvoiceIndex = () => {
     });
 
     // function to delete invoice
-    const deleteInvoice = async (id) => {
+    const deleteInvoice = async (id?: number) => {
         try {
             await apiDelete("/api/invoices/" + id);
         } catch (error) {
-            console.log(error.message);
-            alert(error.message)
+            console.log((error as Error).message);
+            alert((error as Error).message);
         }
         // remove invoice from list
         setInvoices(invoices.filter((item) => item._id !== id));
@@ -53,7 +61,7 @@ const InvoiceIndex = () => {
 
     // function to load invoices with filter
     const loadInvoices = () => {
-        apiGet("/api/invoices", filter).then((data) => setInvoices(data));
+        apiGet("/api/invoices", filter).then((data) => setInvoices(data as Invoice[]));
     };
 
     // load invoices on initialization
@@ -62,13 +70,13 @@ const InvoiceIndex = () => {
     }, []);
 
     // update filter value
-    const handleFilter = (e) => {
+    const handleFilter = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
-        setFilter({...filter, [name]: value});
+        setFilter({...filter, [name]: value} as InvoiceFilter);
     };
 
     // submit filter
-    const handleFilterSubmit = (e) => {
+    const handleFilterSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         loadInvoices();
     };

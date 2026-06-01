@@ -20,25 +20,25 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 import {apiDelete, apiGet} from "../utils/api";
+import {Person} from "../types";
 
 import PersonTable from "./PersonTable";
-import PersonStatistics from "./PersonStatistics";
 
 // list of all persons with statistics
 const PersonIndex = () => {
     // list of persons
-    const [persons, setPersons] = useState([]);
+    const [persons, setPersons] = useState<Person[]>([]);
 
     // function to delete person
-    const deletePerson = async (id) => {
+    const deletePerson = async (id?: number) => {
         try {
             await apiDelete("/api/persons/" + id);
         } catch (error) {
-            console.log(error.message);
-            alert(error.message)
+            console.log((error as Error).message);
+            alert((error as Error).message);
         }
         // remove person from list
         setPersons(persons.filter((item) => item._id !== id));
@@ -46,7 +46,7 @@ const PersonIndex = () => {
 
     // load persons on initialization
     useEffect(() => {
-        apiGet("/api/persons").then((data) => setPersons(data));
+        apiGet("/api/persons").then((data) => setPersons(data as Person[]));
     }, []);
 
     // render list of persons
@@ -58,7 +58,7 @@ const PersonIndex = () => {
                 items={persons}
                 label="Počet osob:"
             />
-           
+
         </div>
     );
 };
