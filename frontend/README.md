@@ -1,11 +1,12 @@
 # Invoice Manager — Frontend
 
-React SPA for managing invoices and persons (clients/vendors).
+React + TypeScript SPA for managing invoices and persons (clients/vendors).
 Communicates with the [Spring Boot backend](../invoice-server-starter/backend) via REST API.
 
 ## Prerequisites
 
 - Node.js 18+
+- TypeScript (included via `npm install`)
 - Running backend at `http://localhost:8080`
 
 ## Installation & Running
@@ -19,9 +20,9 @@ Runs at **http://localhost:5173**.
 
 ## Configuration
 
-The API base URL is defined in `src/utils/api.js`:
+The API base URL is defined in `src/utils/api.ts`:
 
-```js
+```ts
 const API_URL = "http://localhost:8080";
 ```
 
@@ -78,12 +79,13 @@ src/
 ├── persons/         # Person pages and components
 ├── components/      # Shared reusable components (inputs, flash messages)
 ├── utils/
-│   ├── api.js               # HTTP helpers (GET, POST, PUT, DELETE, PDF, Excel)
-│   ├── AuthContext.jsx      # Global authentication state (JWT + user)
-│   ├── ProtectedRoute.jsx   # Route guard for authenticated pages
-│   └── dateStringFormatter.js
-├── App.jsx          # Root component — routing and navigation
-└── main.jsx         # Application entry point
+│   ├── api.ts               # HTTP helpers (GET, POST, PUT, DELETE, PDF, Excel)
+│   ├── AuthContext.tsx      # Global authentication state (JWT + user)
+│   ├── ProtectedRoute.tsx   # Route guard for authenticated pages
+│   └── dateStringFormatter.ts
+├── types.ts         # Shared TypeScript types (Person, Invoice, User, ...)
+├── App.tsx          # Root component — routing and navigation
+└── main.tsx         # Application entry point
 ```
 
 ## Available Scripts

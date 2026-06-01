@@ -22,7 +22,7 @@ Configure your MySQL connection in `src/main/resources/application.yaml`:
 
 ```yaml
 spring.datasource:
-  url: jdbc:mysql://localhost/InvoiceDatabase?createDatabaseIfNotExist=true
+  url: jdbc:mysql://localhost/InvoiceDatabase?createDatabaseIfNotExist=true&serverTimezone=Europe/Prague
   username: root
   password: your_password
 ```
