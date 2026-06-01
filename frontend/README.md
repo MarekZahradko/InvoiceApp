@@ -1,7 +1,7 @@
 # Invoice Manager — Frontend
 
 React + TypeScript SPA for managing invoices and persons (clients/vendors).
-Communicates with the [Spring Boot backend](../invoice-server-starter/backend) via REST API.
+Communicates with the [Spring Boot backend](../backend) via REST API.
 
 ## Prerequisites
 
@@ -70,7 +70,29 @@ Clicking **"Zobrazit PDF"** fetches the invoice as a PDF from the backend and op
 ### Excel Export
 
 Available on the dashboard (`/dashboard`) in the person statistics section.
-Clicking **"Export to Excel"** downloads a `.xlsx` file with identification number, name, and revenue for each person.
+Clicking **"Export do Excelu"** downloads a `.xlsx` file with identification number, name, and revenue for each person.
+
+## Architecture
+
+### Authentication flow
+
+1. User submits credentials on `/login` → `POST /api/auth/login`
+2. Backend returns `{ "token": "eyJ..." }`
+3. Token is stored in `localStorage` and saved into `AuthContext` state
+4. Every API request includes `Authorization: Bearer <token>` (added in `api.ts`)
+5. `ProtectedRoute` checks `AuthContext` on each route — unauthenticated users are redirected to `/login`
+
+### Key files
+
+**`utils/AuthContext.tsx`** — global authentication state. Provides `isAuthenticated`, `user`, `login()`, and `logout()` to the entire app via React Context. Restores session from `localStorage` on page reload.
+
+**`utils/ProtectedRoute.tsx`** — wraps any route that requires login. Redirects to `/login` if the user is not authenticated.
+
+**`utils/api.ts`** — HTTP helper functions (`apiGet`, `apiPost`, `apiPut`, `apiDelete`, `apiGetPdf`, `apiGetExcel`). All requests automatically attach the JWT token from `localStorage`.
+
+**`types.ts`** — shared TypeScript types: `Person`, `Invoice`, `User`, `PersonStatisticsData`, `InvoiceStatisticsData`. Used across all pages and components.
+
+**`components/`** — shared reusable form components: `InputField`, `InputCheck`, `InputSelect`, `FlashMessage`. Accept typed props and are used by both person and invoice forms.
 
 ## Project Structure
 
