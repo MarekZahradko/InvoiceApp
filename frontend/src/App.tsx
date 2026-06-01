@@ -49,7 +49,7 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 export function App() {
   return (
     <AuthProvider>
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <AppLayout />
       </Router>
     </AuthProvider>
