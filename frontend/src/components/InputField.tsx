@@ -10,6 +10,7 @@ interface InputFieldProps {
   min?: number;
   rows?: number;
   handleChange: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 export function InputField(props: InputFieldProps) {
   // supported input types for the input element
@@ -58,6 +59,7 @@ const minlength = ["text", "textarea"].includes(type) ? minProp ?? undefined : u
           name={props.name}
           value={props.value}
           onChange={props.handleChange}
+          onBlur={props.onBlur}
         />
       )}
     </div>

@@ -68,6 +68,28 @@ const PersonForm = () => {
         }
     }, [id]);
 
+    // called when user leaves the IČO field — fetches company data from ARES if IČO is 8 digits
+    const handleIcoBlur = () => {
+        const ico = person.identificationNumber;
+        if (!ico || ico.length !== 8) return;
+
+        apiGet("/api/ares/" + ico).then((data) => {
+            if (data) {
+                const aresData = data as Partial<typeof person>;
+                setPerson((prev) => ({
+                    ...prev,
+                    name: aresData.name || prev.name,
+                    taxNumber: aresData.taxNumber || prev.taxNumber,
+                    street: aresData.street || prev.street,
+                    zip: aresData.zip || prev.zip,
+                    city: aresData.city || prev.city,
+                }));
+            }
+        }).catch(() => {
+            // IČO not found in ARES — silently ignore, user can fill in manually
+        });
+    };
+
     // handle form submission
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -130,6 +152,7 @@ const PersonForm = () => {
                     handleChange={(e) => {
                         setPerson({...person, identificationNumber: e.target.value});
                     }}
+                    onBlur={handleIcoBlur}
                 />
 
                 <InputField
