@@ -21,7 +21,10 @@ POST /api/auth/register
 }
 ```
 
-**Response:** `200 OK` with JWT token
+**Response:** `200 OK`
+```json
+{ "token": "eyJhbGciOiJIUzI1NiJ9..." }
+```
 
 ### Login
 ```
@@ -30,7 +33,10 @@ POST /api/auth/login
 
 **Request Body:** Same as Register
 
-**Response:** `200 OK` with JWT token
+**Response:** `200 OK`
+```json
+{ "token": "eyJhbGciOiJIUzI1NiJ9..." }
+```
 
 ### Usage
 
@@ -233,11 +239,68 @@ GET /api/persons/statistics
 [
   {
     "personId": 1,
+    "identificationNumber": "12345678",
     "personName": "Company Name Ltd.",
     "revenue": 250000.00
   }
 ]
 ```
+
+---
+
+---
+
+## ARES Integration
+
+### Lookup Company by IČO
+```
+GET /api/ares/{ico}
+```
+
+**Public endpoint — no authentication required.**
+
+Returns pre-filled company data from the Czech business registry (ARES).
+Intended for auto-filling the person creation/edit form.
+
+**Example:** `GET /api/ares/27082440`
+
+**Response:** `200 OK` with a `PersonDTO` containing pre-filled fields:
+```json
+{
+  "name": "Example s.r.o.",
+  "identificationNumber": "27082440",
+  "taxNumber": "CZ27082440",
+  "street": "Hlavní 1",
+  "zip": "11000",
+  "city": "Praha"
+}
+```
+
+Returns `404 Not Found` if the IČO is not found in the ARES registry.
+
+---
+
+## Export
+
+### PDF Export
+```
+GET /api/invoices/{id}/pdf
+```
+
+Returns the invoice rendered as a PDF document, displayed inline in the browser.
+
+**Response:** `200 OK` with `Content-Type: application/pdf`
+
+### Excel Export
+```
+GET /api/statistics/export/excel
+```
+
+Returns person revenue statistics as a downloadable `.xlsx` file.
+
+**Response:** `200 OK` with `Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
+
+Each row contains: `identificationNumber`, `personName`, `revenue`.
 
 ---
 
