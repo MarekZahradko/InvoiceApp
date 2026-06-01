@@ -257,7 +257,7 @@ GET /api/persons/statistics
 GET /api/ares/{ico}
 ```
 
-**Public endpoint — no authentication required.**
+**Requires ADMIN role.**
 
 Returns pre-filled company data from the Czech business registry (ARES).
 Intended for auto-filling the person creation/edit form.

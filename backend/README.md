@@ -51,10 +51,10 @@ cz.itnetwork/
 | Action | Unauthenticated | USER | ADMIN |
 |--------|----------------|------|-------|
 | Login / Register | ✅ | ✅ | ✅ |
-| ARES lookup | ✅ | ✅ | ✅ |
 | View invoices & persons | ❌ | ✅ | ✅ |
 | View statistics | ❌ | ✅ | ✅ |
 | Export PDF / Excel | ❌ | ✅ | ✅ |
+| ARES lookup | ❌ | ❌ | ✅ |
 | Create / Edit / Delete | ❌ | ❌ | ✅ |
 
 All registered users start with the **USER** role. Admin access must be granted manually in the database — see [First-Time Setup](#first-time-setup--admin-role).
