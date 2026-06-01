@@ -35,6 +35,10 @@ Built with Spring Boot (backend) and React + TypeScript (frontend).
 └── screenshots/  # Application screenshots
 ```
 
+## Demo
+
+![Demo](screenshots/InvoiceApp-intro.gif)
+
 ## Screenshots
 
 | Login | Dashboard |
