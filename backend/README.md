@@ -2,6 +2,50 @@
 
 Spring Boot REST API for managing invoices and persons (clients/vendors).
 
+## Architecture
+
+The backend follows a standard layered architecture:
+
+```
+Controller → Service → Repository → Database
+```
+
+### Package structure
+
+```
+cz.itnetwork/
+├── controller/       # REST endpoints — receive requests, delegate to services
+│   └── advice/       # Global exception handler (@ControllerAdvice)
+├── service/          # Business logic — interfaces + implementations
+├── entity/           # JPA entities mapped to database tables
+│   ├── repository/   # Spring Data JPA repositories
+│   └── filter/       # Invoice filtering via JPA Specification
+├── dto/              # Data Transfer Objects — what the API accepts/returns
+│   ├── mapper/       # MapStruct mappers (Entity ↔ DTO conversion)
+│   └── ares/         # DTOs for the ARES external API response
+├── security/         # JWT filter, token utility, Spring Security config
+└── constant/         # Enums — Countries, Role
+```
+
+### Key design decisions
+
+**DTO pattern** — entities are never exposed directly. MapStruct generates the conversion code at compile time, keeping controllers and clients decoupled from the database schema.
+
+**Soft delete for persons** — deleting a person sets `hidden = true` instead of removing the row. This preserves invoice history (invoices still reference the original person record).
+
+**Person versioning on edit** — updating a person creates a new row and hides the original. Existing invoices continue to reference the old version, so historical data stays consistent.
+
+**JPA Specification for invoice filtering** — `InvoiceSpecification` builds a dynamic query from `InvoiceFilter` parameters (buyerID, sellerID, product, price range, limit) without multiple repository methods.
+
+**JWT authentication flow:**
+1. Client sends credentials to `POST /api/auth/login`
+2. Server validates, signs a JWT with a secret key, returns `{ "token": "..." }`
+3. Client includes the token in every request: `Authorization: Bearer <token>`
+4. `JwtFilter` validates the token on each request and sets the `SecurityContext`
+5. Role-based rules in `SecurityConfig` enforce ADMIN-only write access
+
+---
+
 ## Prerequisites
 
 - Java 17+
